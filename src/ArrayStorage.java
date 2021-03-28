@@ -5,26 +5,24 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10000];
+    private int size;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage,0, size - 1, null);
+        size = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < this.storage.length; i++) {
-            if (this.storage[i] == null) {
-                this.storage[i] = r;
-                break;
-            }
-        }
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        for (Resume resume : this.storage) {
-            if (resume != null && resume.toString().equals(uuid)) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
 
-                return resume;
+                return storage[i];
             }
         }
 
@@ -33,15 +31,16 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int i = 0;
-        for (; i < this.storage.length; i++) {
-            if (this.storage[i].toString().equals(uuid)) {
-                this.storage[i] = null;
+        for (; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                storage[i] = null;
+                size--;
                 break;
             }
         }
         i++;
-        for (; i < this.storage.length; i++) {
-            this.storage[i - 1] = this.storage[i];
+        for (; i < size; i++) {
+            storage[i - 1] = storage[i];
         }
     }
 
@@ -55,8 +54,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        return (int) Arrays.stream(storage)
-                .filter(Objects::nonNull)
-                .count();
+        return size;
     }
 }
