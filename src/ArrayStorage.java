@@ -9,7 +9,7 @@ public class ArrayStorage {
     private int size;
 
     void clear() {
-        Arrays.fill(storage,0, size - 1, null);
+        Arrays.fill(storage,0, size, null);
         size = 0;
     }
 
@@ -34,14 +34,14 @@ public class ArrayStorage {
         for (; i < size; i++) {
             if (storage[i].toString().equals(uuid)) {
                 storage[i] = null;
-                size--;
                 break;
             }
         }
-        i++;
-        for (; i < size; i++) {
-            storage[i - 1] = storage[i];
+        for (; i < size - 1; i++) {
+            storage[i] = storage[i + 1];
         }
+        storage[size - 1] = null;
+        size--;
     }
 
     /**
