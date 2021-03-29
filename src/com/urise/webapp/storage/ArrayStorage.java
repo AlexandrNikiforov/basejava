@@ -9,20 +9,24 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private final Resume[] storage = new Resume[10000];
     private int size;
 
     public void clear() {
-        Arrays.fill(storage,0, size, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void save(Resume r) {
-        storage[size] = r;
-        size++;
+        if (!containsResume(r)) {
+            storage[size] = r;
+            size++;
+        } else {
+            throw new IllegalArgumentException("The storage already contains that resume");
+        }
     }
 
-    public void update (Resume resume) {
+    public void update(Resume resume) {
         for (int i = 0; i < size; i++) {
             if (storage[i].toString().equals(resume.getUuid())) {
                 storage[i] = resume;
@@ -66,5 +70,14 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private boolean containsResume(Resume resume) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].equals(resume)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

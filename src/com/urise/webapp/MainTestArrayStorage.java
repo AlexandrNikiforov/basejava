@@ -33,6 +33,15 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
+        System.out.println("Save in the storage resume \"r1\" with uuid - \"uuid1\"");
+        ARRAY_STORAGE.save(r1);
+        System.out.println("Change r1 uuid to \"uuid1.1\"");
+        r1.setUuid("uuid1.1");
+        System.out.println("Update r1 in the ArrayStorage");
+        ARRAY_STORAGE.update(r1);
+        System.out.println("Print all the resumes from the ArrayStorage: ");
+        printAll();
     }
 
     static void printAll() {
