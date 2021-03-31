@@ -9,7 +9,10 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private static final int STORAGE_CAPACITY = 10000;
+    private static final int STORAGE_CAPACITY = 10_000;
+    private static final String ERROR_TEXT_NO_SUCH_RESUME = "ERROR: the storage doesn't contain the resume with uuid: ";
+    public static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the resume with uuid: ";
+    public static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
     private final Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int size;
 
@@ -19,12 +22,12 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (containsResume(resume.getUuid())) {
-            System.out.println("ERROR: the storage already contains that resume");
+        if (findResumeIndex(resume.getUuid()) >= 0) {
+            System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
             return;
         }
         if (size == STORAGE_CAPACITY) {
-            System.out.println("ERROR: no space in the storage");
+            System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         } else {
             storage[size] = resume;
             size++;
@@ -32,8 +35,8 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if (!containsResume(resume.getUuid())) {
-            System.out.println("ERROR: the storage doesn't contain that resume");
+        if (findResumeIndex(resume.getUuid()) < 0) {
+            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
         } else {
             int index = findResumeIndex(resume.getUuid());
             storage[index] = resume;
@@ -41,8 +44,8 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (!containsResume(uuid)) {
-            System.out.println("The storage doesn't contain resume with this id");
+        if (findResumeIndex(uuid) < 0) {
+            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
             int index = findResumeIndex(uuid);
             return storage[index];
@@ -51,8 +54,8 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        if (!containsResume(uuid)) {
-            System.out.println("ERROR: the storage doesn't contain that resume");
+        if (findResumeIndex(uuid) < 0) {
+            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
             int index = findResumeIndex(uuid);
             storage[index] = null;
@@ -77,16 +80,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private boolean containsResume(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private int findResumeIndex (String uuid) {
+    private int findResumeIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
