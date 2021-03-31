@@ -11,8 +11,8 @@ import java.util.Objects;
 public class ArrayStorage {
     private static final int STORAGE_CAPACITY = 10_000;
     private static final String ERROR_TEXT_NO_SUCH_RESUME = "ERROR: the storage doesn't contain the resume with uuid: ";
-    public static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the resume with uuid: ";
-    public static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
+    private static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the resume with uuid: ";
+    private static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
     private final Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int size;
 
