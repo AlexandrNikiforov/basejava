@@ -5,13 +5,15 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.Objects;
 
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
     private static final int STORAGE_CAPACITY = 10_000;
     private static final String ERROR_TEXT_NO_SUCH_RESUME = "ERROR: the storage doesn't contain the resume with uuid: ";
-    private static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the resume with uuid: ";
+    private static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the " +
+            "resume with uuid: ";
     private static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
     private final Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int size;
@@ -35,30 +37,29 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if (findResumeIndex(resume.getUuid()) < 0) {
+        int index = findResumeIndex(resume.getUuid());
+        if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
         } else {
-            int index = findResumeIndex(resume.getUuid());
             storage[index] = resume;
         }
     }
 
     public Resume get(String uuid) {
-        if (findResumeIndex(uuid) < 0) {
+        int index = findResumeIndex(uuid);
+        if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
-            int index = findResumeIndex(uuid);
             return storage[index];
         }
         return null;
     }
 
     public void delete(String uuid) {
-        if (findResumeIndex(uuid) < 0) {
+        int index = findResumeIndex(uuid);
+        if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
-            int index = findResumeIndex(uuid);
-            storage[index] = null;
             for (; index < size - 1; index++) {
                 storage[index] = storage[index + 1];
             }
