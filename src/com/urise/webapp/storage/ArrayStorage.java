@@ -24,7 +24,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (findResumeIndex(resume.getUuid()) >= 0) {
+        if (getIndex(resume.getUuid()) >= 0) {
             System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
             return;
         }
@@ -37,7 +37,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = findResumeIndex(resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
         } else {
@@ -46,17 +46,17 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = findResumeIndex(uuid);
+        int index = getIndex(uuid);
         if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
+            return null;
         } else {
             return storage[index];
         }
-        return null;
     }
 
     public void delete(String uuid) {
-        int index = findResumeIndex(uuid);
+        int index = getIndex(uuid);
         if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
@@ -81,7 +81,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int findResumeIndex(String uuid) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
