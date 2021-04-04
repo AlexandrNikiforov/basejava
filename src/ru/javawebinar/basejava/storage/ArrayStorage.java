@@ -53,11 +53,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
-        return Arrays.stream(storage)
-                .filter(Objects::nonNull)
-                .toArray(Resume[]::new);
-    }
 
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {

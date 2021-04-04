@@ -2,6 +2,9 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public abstract class AbstractArrayStorage implements Storage {
 
     protected static final int STORAGE_CAPACITY = 10_000;
@@ -24,6 +27,12 @@ public abstract class AbstractArrayStorage implements Storage {
         } else {
             return storage[index];
         }
+    }
+
+    public Resume[] getAll() {
+        return Arrays.stream(storage)
+                .filter(Objects::nonNull)
+                .toArray(Resume[]::new);
     }
 
     protected abstract int getIndex(String uuid);

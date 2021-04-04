@@ -18,8 +18,21 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void save(Resume r) {
-
+    public void save(Resume resume) {
+        int index = Arrays.binarySearch(storage, 0, size, resume);
+        if (index >= 0) {
+            System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
+            return;
+        }
+        if (size == STORAGE_CAPACITY) {
+            System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
+        } else {
+            for (int i = size - 1; i >= 0 && i >= (-index - 1); i--) {
+                storage[i + 1] = storage[i];
+            }
+            storage[(-index - 1)] = resume;
+            size++;
+        }
     }
 
     @Override
@@ -33,20 +46,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     }
 
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }
-
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
-        int index = Arrays.binarySearch(storage, 0, size, searchKey);
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+        return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
