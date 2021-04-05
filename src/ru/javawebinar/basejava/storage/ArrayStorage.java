@@ -13,15 +13,11 @@ public class ArrayStorage extends AbstractArrayStorage {
         size++;
     }
 
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
-        } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        }
+    @Override
+    protected void deleteAfterValidation(int index) {
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     /**

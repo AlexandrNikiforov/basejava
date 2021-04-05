@@ -42,8 +42,6 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    protected abstract void performSavingAfterValidation(Resume resume, int index);
-
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
@@ -51,6 +49,15 @@ public abstract class AbstractArrayStorage implements Storage {
             return null;
         } else {
             return storage[index];
+        }
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
+        } else {
+            deleteAfterValidation(index);
         }
     }
 
@@ -65,4 +72,8 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
+
+    protected abstract void performSavingAfterValidation(Resume resume, int index);
+
+    protected abstract void deleteAfterValidation(int index);
 }
