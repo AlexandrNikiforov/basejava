@@ -7,21 +7,12 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void save(Resume resume) {
-        int index = Arrays.binarySearch(storage, 0, size, resume);
-        if (index >= 0) {
-            System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-            return;
+    protected void performSavingAfterValidation(Resume resume, int index) {
+        for (int i = size - 1; i >= 0 && i >= (-index - 1); i--) {
+            storage[i + 1] = storage[i];
         }
-        if (size == STORAGE_CAPACITY) {
-            System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
-        } else {
-            for (int i = size - 1; i >= 0 && i >= (-index - 1); i--) {
-                storage[i + 1] = storage[i];
-            }
-            storage[(-index - 1)] = resume;
-            size++;
-        }
+        storage[(-index - 1)] = resume;
+        size++;
     }
 
     @Override

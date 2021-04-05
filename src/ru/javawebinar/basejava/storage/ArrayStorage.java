@@ -7,17 +7,10 @@ import ru.javawebinar.basejava.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) >= 0) {
-            System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-            return;
-        }
-        if (size == STORAGE_CAPACITY) {
-            System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
-        } else {
-            storage[size] = resume;
-            size++;
-        }
+    @Override
+    protected void performSavingAfterValidation(Resume resume, int index) {
+        storage[size] = resume;
+        size++;
     }
 
     public void delete(String uuid) {
