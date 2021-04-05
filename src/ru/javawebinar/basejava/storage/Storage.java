@@ -18,4 +18,3 @@ public interface Storage {
 
     int size();
 }
-
