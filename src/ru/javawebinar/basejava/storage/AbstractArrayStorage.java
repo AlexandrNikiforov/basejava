@@ -38,7 +38,8 @@ public abstract class AbstractArrayStorage implements Storage {
         if (size == STORAGE_CAPACITY) {
             System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         } else {
-            performSavingAfterValidation(resume, index);
+            saveToArray(resume, index);
+            size++;
         }
     }
 
@@ -47,9 +48,8 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
             return null;
-        } else {
-            return storage[index];
         }
+        return storage[index];
     }
 
     public void delete(String uuid) {
@@ -57,7 +57,9 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
         } else {
-            deleteAfterValidation(index);
+            deleteFromArray(index);
+            storage[size - 1] = null;
+            size--;
         }
     }
 
@@ -73,7 +75,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void performSavingAfterValidation(Resume resume, int index);
+    protected abstract void saveToArray(Resume resume, int index);
 
-    protected abstract void deleteAfterValidation(int index);
+    protected abstract void deleteFromArray(int index);
 }
