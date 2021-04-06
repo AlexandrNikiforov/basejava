@@ -17,9 +17,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         storage[index] = storage[size - 1];
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
