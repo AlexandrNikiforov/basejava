@@ -13,12 +13,9 @@ public class MainTestArrayStorage {
 
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
-        r1.setUuid("uuid1");
-        Resume r2 = new Resume();
-        r2.setUuid("uuid2");
-        Resume r3 = new Resume();
-        r3.setUuid("uuid3");
+        Resume r1 = new Resume("uuid1");
+        Resume r2 = new Resume("uuid2");
+        Resume r3 = new Resume("uuid3");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -40,7 +37,7 @@ public class MainTestArrayStorage {
         System.out.println("Save in the storage resume \"r1\" with uuid - \"uuid1\"");
         ARRAY_STORAGE.save(r1);
         System.out.println("Change r1 uuid to \"uuid1.1\"");
-        r1.setUuid("uuid1.1");
+        r1 = new Resume("uuid1.1");
         System.out.println("Update r1 in the ArrayStorage");
         ARRAY_STORAGE.update(r1);
         System.out.println("Print all the resumes from the ArrayStorage: ");

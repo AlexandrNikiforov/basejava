@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exceptions.ExistStorageException;
+import ru.javawebinar.basejava.exceptions.NotExistStorageException;
+import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -24,7 +27,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
-            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid(), ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -33,22 +36,20 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.println(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-            return;
+            throw new ExistStorageException(resume.getUuid(),
+                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
         }
         if (size == STORAGE_CAPACITY) {
-            System.out.println(ERROR_TEXT_STORAGE_OUT_OF_SPACE);
-        } else {
-            saveToArray(resume, index);
-            size++;
+            throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }
+        saveToArray(resume, index);
+        size++;
     }
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
-            return null;
+            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
         return storage[index];
     }
@@ -56,12 +57,12 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println(ERROR_TEXT_NO_SUCH_RESUME + uuid);
-        } else {
-            deleteFromArray(index);
-            storage[size - 1] = null;
-            size--;
+            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
+        deleteFromArray(index);
+        storage[size - 1] = null;
+        size--;
+
     }
 
     public Resume[] getAll() {
