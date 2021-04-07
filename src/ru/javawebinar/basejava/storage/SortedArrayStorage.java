@@ -19,9 +19,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void deleteFromArray(int index) {
-        for (; index < size - 1; index++) {
-            storage[index] = storage[index + 1];
-        }
+        System.out.println("index: " + index);
+        System.arraycopy(storage, (index + 1), storage, (index), (size - index) - 1);
         storage[size - 1] = null;
     }
 

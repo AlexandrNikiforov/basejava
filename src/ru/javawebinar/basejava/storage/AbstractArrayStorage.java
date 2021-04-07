@@ -8,7 +8,8 @@ import java.util.Objects;
 public abstract class AbstractArrayStorage implements Storage {
 
     protected static final int STORAGE_CAPACITY = 10_000;
-    protected static final String ERROR_TEXT_NO_SUCH_RESUME = "ERROR: the storage doesn't contain the resume with uuid: ";
+    protected static final String ERROR_TEXT_NO_SUCH_RESUME =
+            "ERROR: the storage doesn't contain the resume with uuid: ";
     protected static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the " +
             "resume with uuid: ";
     protected static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
