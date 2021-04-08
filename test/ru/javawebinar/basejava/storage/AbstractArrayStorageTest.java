@@ -1,41 +1,42 @@
 package ru.javawebinar.basejava.storage;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractArrayStorageTest {
 
-//    private final Storage arrayStorage;
+    private final Storage storage;
 
     private final Resume resume1 = new Resume("uuid01");
     private final Resume resume2 = new Resume("uuid02");
     private final Resume resume3 = new Resume("uuid03");
 
-//    public AbstractArrayStorageTest() {
-////        this.arrayStorage = arrayStorage;
-//    }
+    public AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @BeforeEach
-    void init(Storage arrayStorage) {
+    void init() {
         Resume resume1 = new Resume("uuid01");
         Resume resume2 = new Resume("uuid02");
         Resume resume3 = new Resume("uuid03");
-        arrayStorage.clear();
-        arrayStorage.save(resume1);
-        arrayStorage.save(resume2);
-        arrayStorage.save(resume3);
+        storage.clear();
+        storage.save(resume1);
+        storage.save(resume2);
+        storage.save(resume3);
     }
 
     @Test
-    void clearShouldFillArrayWithNullAndMakeSizeZero(Storage arrayStorage) {
+    void clearShouldFillArrayWithNullAndMakeSizeZero() {
         Resume[] expectedResumes = new Resume[0];
-        arrayStorage.clear();
-        Resume[] actualResumes = arrayStorage.getAll();
+        storage.clear();
+        Resume[] actualResumes = storage.getAll();
 
         int expectedSize = 0;
-        int actualSize = arrayStorage.size();
+        int actualSize = storage.size();
 
         assertAll(
                 () -> assertArrayEquals(expectedResumes, actualResumes),
