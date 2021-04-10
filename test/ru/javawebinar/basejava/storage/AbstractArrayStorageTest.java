@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,9 +19,6 @@ abstract class AbstractArrayStorageTest {
 
     @BeforeEach
     void init() {
-        Resume resume1 = new Resume("uuid01");
-        Resume resume2 = new Resume("uuid02");
-        Resume resume3 = new Resume("uuid03");
         storage.clear();
         storage.save(resume1);
         storage.save(resume2);
@@ -44,9 +40,15 @@ abstract class AbstractArrayStorageTest {
         );
     }
 
-    @Disabled
     @Test
-    void update() {
+    void updateShouldUpdateResumeIfResumeExistsInStorage() {
+        resume2.setUuid("updated_uuid02");
+
+        Resume expected = new Resume("updated_uuid02");
+        storage.update(resume2);
+        Resume actual = storage.get("updated_uuid02");
+
+        assertEquals(expected,actual);
     }
 
     @Disabled
