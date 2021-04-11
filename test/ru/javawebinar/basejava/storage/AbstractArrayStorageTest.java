@@ -7,7 +7,11 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.fail;
 
 abstract class AbstractArrayStorageTest {
 
@@ -51,7 +55,7 @@ abstract class AbstractArrayStorageTest {
 
         Resume expected = new Resume("updated_uuid02");
         storage.update(resume2);
-        Resume actual = storage.get("updated_uuid02");
+        Resume actual = storage.get(expected.getUuid());
 
         assertEquals(expected, actual);
     }
@@ -69,13 +73,13 @@ abstract class AbstractArrayStorageTest {
     void saveShouldAddResumeInStorageIfResumeNotExistAndStorageIsNotFull() {
         Resume expected = new Resume("uuid4");
         storage.save(resumeNotExistInStorage);
-        Resume actual = storage.get("uuid4");
+        Resume actual = storage.get(expected.getUuid());
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void saveShouldThrowIfResumeExistsInStorage() {
+    void saveShouldThrowWhenResumeExistsInStorage() {
         Executable executable = () -> storage.save(resume1);
         String expectedMessage = AbstractArrayStorage.ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE
                 + resume1.getUuid();
@@ -86,7 +90,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void saveShouldThrowWhenStorageOverflow() {
-        for(int i = 3; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
+        for (int i = 3; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
             try {
                 Resume newResume = new Resume("uuid" + i + 1);
                 storage.save(newResume);
@@ -102,24 +106,56 @@ abstract class AbstractArrayStorageTest {
         assertEquals(expectedMessage, exceptionThatWasThrown.getMessage());
     }
 
-
-    @Disabled
     @Test
-    void get() {
+    void getShouldReturnResumeWithGivenUuidWhenResumeExistsInStorage() {
+        Resume expected = resume2;
+        Resume actual = storage.get(resume2.getUuid());
+
+        assertEquals(expected, actual);
     }
 
-    @Disabled
     @Test
-    void delete() {
+    void getShouldThrowIfResumeDoesNotExistInStorage() {
+        Executable executable = () -> storage.get(resumeNotExistInStorage.getUuid());
+        String expectedMessage = AbstractArrayStorage.ERROR_TEXT_NO_SUCH_RESUME + resumeNotExistInStorage.getUuid();
+
+        Throwable exceptionThatWasThrown = assertThrows(NotExistStorageException.class, executable);
+        assertEquals(expectedMessage, exceptionThatWasThrown.getMessage());
     }
 
-    @Disabled
     @Test
-    void getAll() {
+    void deleteShouldRemoveResumeWhenResumeExistsInStorage() {
+
+        storage.delete(resume2.getUuid());
+        Executable executable = () -> storage.get(resume2.getUuid());
+        String expectedMessage = AbstractArrayStorage.ERROR_TEXT_NO_SUCH_RESUME + resume2.getUuid();
+
+        Throwable exceptionThatWasThrown = assertThrows(NotExistStorageException.class, executable);
+        assertEquals(expectedMessage, exceptionThatWasThrown.getMessage());
     }
 
-    @Disabled
     @Test
-    void size() {
+    void deleteShouldThrowWhenResumeExistsInStorage() {
+        Executable executable = () -> storage.delete(resumeNotExistInStorage.getUuid());
+        String expectedMessage = AbstractArrayStorage.ERROR_TEXT_NO_SUCH_RESUME + resumeNotExistInStorage.getUuid();
+
+        Throwable exceptionThatWasThrown = assertThrows(NotExistStorageException.class, executable);
+        assertEquals(expectedMessage, exceptionThatWasThrown.getMessage());
+    }
+
+    @Test
+    void getAllShouldReturnArrayOfExistedResumes() {
+        Resume[] expected = {resume1, resume2, resume3};
+        Resume[] actual = storage.getAll();
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void sizeShouldReturnNumberOfResumesInStorage() {
+        int expected = 3;
+        int actual = storage.size();
+
+        assertEquals(expected, actual);
     }
 }
