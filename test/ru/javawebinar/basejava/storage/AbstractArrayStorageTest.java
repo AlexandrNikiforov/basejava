@@ -8,31 +8,31 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractArrayStorageTest {
 
     private final Storage storage;
 
-    private final Resume resume1 = new Resume("uuid01");
-    private final Resume resume2 = new Resume("uuid02");
-    private final Resume resume3 = new Resume("uuid03");
-    private final Resume nonexistentResume = new Resume("uuid4");
+    private static final String UUID_01 = "uuid01";
+    private static final Resume RESUME_1 = new Resume(UUID_01);
+    private static final String UUID_02 = "uuid02";
+    private static final Resume RESUME_2 = new Resume(UUID_02);
+    private static final String UUID_03 = "uuid03";
+    private static final Resume RESUME_3 = new Resume(UUID_03);
+    private static final String UUID_04 = "uuid04";
+    private static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
 
-    public AbstractArrayStorageTest(Storage storage) {
+    protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
     @BeforeEach
     void init() {
         storage.clear();
-        storage.save(resume1);
-        storage.save(resume2);
-        storage.save(resume3);
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
     }
 
     @Test
@@ -52,26 +52,23 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        resume2.setUuid("updated_uuid02");
+        Resume newResume = new Resume(UUID_01);
+        storage.update(newResume);
 
-        Resume expected = new Resume("updated_uuid02");
-        storage.update(resume2);
-        Resume actual = storage.get(expected.getUuid());
-
-        assertEquals(expected, actual);
+        assertTrue(newResume == storage.get(UUID_01));
     }
 
     @Test
     void updateShouldThrowIfResumeDoesNotExistInStorage() {
-        Executable executable = () -> storage.update(nonexistentResume);
+        Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
 
         assertThrows(NotExistStorageException.class, executable);
     }
 
     @Test
     void saveShouldAddResumeInStorageIfResumeNotExist() {
-        Resume expectedResume = new Resume("uuid4");
-        storage.save(nonexistentResume);
+        Resume expectedResume = new Resume(UUID_04);
+        storage.save(NON_EXISTENT_RESUME);
         Resume actualResume = storage.get(expectedResume.getUuid());
 
         int expectedSize = 4;
@@ -85,7 +82,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void saveShouldThrowWhenResumeExistsInStorage() {
-        Executable executable = () -> storage.save(resume1);
+        Executable executable = () -> storage.save(RESUME_1);
 
         assertThrows(ExistStorageException.class, executable);
     }
@@ -94,37 +91,37 @@ abstract class AbstractArrayStorageTest {
     void saveShouldThrowWhenStorageOverflow() {
         for (int i = 3; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
             try {
-                Resume newResume = new Resume("uuid" + i + 1);
+                Resume newResume = new Resume();
                 storage.save(newResume);
-            } catch (RuntimeException e) {
+            } catch (StorageException e) {
                 fail("An exception was thrown before storage was overflowed");
             }
         }
-        Resume resume10000 = new Resume("uuid10000");
-        Executable executable = () -> storage.save(resume10000);
+        Resume resume10001 = new Resume();
+        Executable executable = () -> storage.save(resume10001);
 
         assertThrows(StorageException.class, executable);
     }
 
     @Test
     void getShouldReturnResumeWithGivenUuidWhenResumeExistsInStorage() {
-        Resume expected = resume2;
-        Resume actual = storage.get(resume2.getUuid());
+        Resume expected = RESUME_2;
+        Resume actual = storage.get(RESUME_2.getUuid());
 
         assertEquals(expected, actual);
     }
 
     @Test
     void getShouldThrowIfResumeDoesNotExistInStorage() {
-        Executable executable = () -> storage.get(nonexistentResume.getUuid());
+        Executable executable = () -> storage.get(NON_EXISTENT_RESUME.getUuid());
 
         assertThrows(NotExistStorageException.class, executable);
     }
 
     @Test
     void deleteShouldRemoveResumeWhenResumeExistsInStorage() {
-        storage.delete(resume2.getUuid());
-        Executable executable = () -> storage.get(resume2.getUuid());
+        storage.delete(RESUME_2.getUuid());
+        Executable executable = () -> storage.get(RESUME_2.getUuid());
 
         int expectedSize = 2;
         int actualSize = storage.size();
@@ -136,14 +133,14 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void deleteShouldThrowWhenResumeExistsInStorage() {
-        Executable executable = () -> storage.delete(nonexistentResume.getUuid());
+        Executable executable = () -> storage.delete(NON_EXISTENT_RESUME.getUuid());
 
         assertThrows(NotExistStorageException.class, executable);
     }
 
     @Test
     void getAllShouldReturnArrayOfExistedResumes() {
-        Resume[] expected = {resume1, resume2, resume3};
+        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
         Resume[] actual = storage.getAll();
 
         assertArrayEquals(expected, actual);
