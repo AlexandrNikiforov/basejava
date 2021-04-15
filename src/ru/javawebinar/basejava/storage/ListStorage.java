@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
 
@@ -19,6 +20,12 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
+    }
+
+    public List<Resume> getAll() {
+        return storage.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -47,6 +47,8 @@ public abstract class AbstractStorage {
         }
     }
 
+
+
     protected abstract void updateResumeInStorage(Resume resume, int index);
 
     protected abstract int size ();

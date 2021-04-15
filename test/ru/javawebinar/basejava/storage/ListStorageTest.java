@@ -8,6 +8,9 @@ import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListStorageTest {
@@ -24,7 +27,7 @@ class ListStorageTest {
 
     @BeforeEach
     void init() {
-//        storage.clear();
+        storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
@@ -81,6 +84,14 @@ class ListStorageTest {
     void sizeShouldReturnNumberOfResumesInStorage() {
         int expected = 3;
         int actual = storage.size();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllShouldReturnArrayOfExistedResumes() {
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> actual = storage.getAll();
 
         assertEquals(expected, actual);
     }
