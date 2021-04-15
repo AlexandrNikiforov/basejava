@@ -34,6 +34,31 @@ class ListStorageTest {
     }
 
     @Test
+    void clearShouldFillArrayWithNull() {
+        storage.clear();
+
+        int expected = 0;
+        int actual = storage.size();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateShouldUpdateResumeIfResumeExistsInStorage() {
+        Resume newResume = new Resume(UUID_01);
+        storage.update(newResume);
+
+        assertTrue(newResume == storage.get(UUID_01));
+    }
+
+    @Test
+    void updateShouldThrowIfResumeDoesNotExistInStorage() {
+        Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
+
+        assertThrows(NotExistStorageException.class, executable);
+    }
+
+    @Test
     void saveShouldAddResumeInStorageIfResumeNotExist() {
         Resume expectedResume = new Resume(UUID_04);
         storage.save(NON_EXISTENT_RESUME);
@@ -65,18 +90,31 @@ class ListStorageTest {
     }
 
     @Test
-    void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = new Resume(UUID_01);
-        storage.update(newResume);
+    void deleteShouldRemoveResumeWhenResumeExistsInStorage() {
+        storage.delete(RESUME_2.getUuid());
+        Executable executable = () -> storage.get(RESUME_2.getUuid());
 
-        assertTrue(newResume == storage.get(UUID_01));
+        int expectedSize = 2;
+        int actualSize = storage.size();
+
+        assertAll(
+                () -> assertThrows(NotExistStorageException.class, executable),
+                () -> assertEquals(expectedSize, actualSize));
     }
 
     @Test
-    void updateShouldThrowIfResumeDoesNotExistInStorage() {
-        Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
+    void deleteShouldThrowWhenResumeExistsInStorage() {
+        Executable executable = () -> storage.delete(NON_EXISTENT_RESUME.getUuid());
 
         assertThrows(NotExistStorageException.class, executable);
+    }
+
+    @Test
+    void getAllShouldReturnArrayOfExistedResumes() {
+        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
+        Resume[] actual = storage.getAll();
+
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -86,23 +124,4 @@ class ListStorageTest {
 
         assertEquals(expected, actual);
     }
-
-    @Test
-    void getAllShouldReturnArrayOfExistedResumes() {
-        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
-        List<Resume> actual = storage.getAll();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void clearShouldFillArrayWithNullAndMakeSizeZero() {
-        storage.clear();
-
-        int expected = 0;
-        int actual = storage.size();
-
-        assertEquals(expected, actual);
-    }
-
 }

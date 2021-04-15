@@ -22,10 +22,10 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-    public List<Resume> getAll() {
+    public Resume[] getAll() {
         return storage.stream()
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toArray(Resume[]::new);
     }
 
     @Override
@@ -46,18 +46,12 @@ public class ListStorage extends AbstractStorage {
         return storage.get(index);
     }
 
+    @Override
+    protected void deleteFromStorage(int index) {
+        storage.remove(index);
+    }
+
     //
-//    public void delete(String uuid) {
-//        int index = getIndex(uuid);
-//        if (index < 0) {
-//            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
-//        }
-//        deleteFromArray(index);
-//        storage[size - 1] = null;
-//        size--;
-//
-//    }
-//
 //    public Resume[] getAll() {
 //        return Arrays.stream(storage)
 //                .filter(Objects::nonNull)

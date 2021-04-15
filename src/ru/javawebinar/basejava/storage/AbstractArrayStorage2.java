@@ -50,19 +50,17 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
     }
 
     @Override
-    protected  Resume getFromStorage(int index) {
+    protected Resume getFromStorage(int index) {
         return storage[index];
     }
 
+    @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
-        }
-        deleteFromArray(index);
+        checkIfResumeAbsent(uuid, index);
+        deleteFromStorage(index);
         storage[size - 1] = null;
         size--;
-
     }
 
     public Resume[] getAll() {
@@ -80,5 +78,5 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
 
     protected abstract void saveToStorage(Resume resume, int index);
 
-    protected abstract void deleteFromArray(int index);
+    protected abstract void deleteFromStorage(int index);
 }
