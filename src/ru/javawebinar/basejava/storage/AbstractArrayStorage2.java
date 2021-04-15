@@ -8,7 +8,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage2 extends AbstractStorage {
 
     protected static final int STORAGE_CAPACITY = 10_000;
     protected static final String ERROR_TEXT_NO_SUCH_RESUME =
@@ -28,8 +28,19 @@ public abstract class AbstractArrayStorage implements Storage {
         if (size == STORAGE_CAPACITY) {
             throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }
-        saveToArray(resume, index);
+        saveToStorage(resume, index);
         size++;
+    }
+
+    @Override
+    protected void validate(Resume resume, int index) {
+        if (index >= 0) {
+            throw new ExistStorageException(resume.getUuid(),
+                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
+        }
+        if (size == STORAGE_CAPACITY) {
+            throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
+        }
     }
 
     public void update(Resume resume) {
@@ -46,11 +57,8 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
-        }
+    @Override
+    protected  Resume getFromStorage(int index) {
         return storage[index];
     }
 
@@ -77,7 +85,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void saveToArray(Resume resume, int index);
+    protected abstract void saveToStorage(Resume resume, int index);
 
     protected abstract void deleteFromArray(int index);
 }

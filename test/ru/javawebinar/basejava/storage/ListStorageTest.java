@@ -8,14 +8,11 @@ import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArrayListStorageTest {
+class ListStorageTest {
 
-    private final ArrayListStorage storage = new ArrayListStorage();
+    private final ListStorage storage = new ListStorage();
     private static final String UUID_01 = "uuid01";
     private static final Resume RESUME_1 = new Resume(UUID_01);
     private static final String UUID_02 = "uuid02";
@@ -43,11 +40,28 @@ class ArrayListStorageTest {
         assertEquals(expectedResume, actualResume);
     }
 
-//    @Test
-//    void saveShouldThrowWhenResumeExistsInStorage() {
-//        Executable executable = () -> storage.save(RESUME_1);
-//
-//        assertThrows(ExistStorageException.class, executable);
+    @Test
+    void saveShouldThrowWhenResumeExistsInStorage() {
+        Executable executable = () -> storage.save(RESUME_1);
+
+        assertThrows(ExistStorageException.class, executable);
+    }
+
+    @Test
+    void getShouldReturnResumeWithGivenUuidWhenResumeExistsInStorage() {
+        Resume expected = RESUME_2;
+        Resume actual = storage.get(RESUME_2.getUuid());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getShouldThrowIfResumeDoesNotExistInStorage() {
+        Executable executable = () -> storage.get(NON_EXISTENT_RESUME.getUuid());
+
+        assertThrows(NotExistStorageException.class, executable);
+    }
+
 
     @Disabled
     @Test
