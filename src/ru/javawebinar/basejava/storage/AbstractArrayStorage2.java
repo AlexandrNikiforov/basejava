@@ -14,15 +14,16 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
     protected final Resume[] storage = new Resume[STORAGE_CAPACITY];
     protected int size;
 
+    @Override
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
+    @Override
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-        }
-        if (size == STORAGE_CAPACITY) {
-            throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
-        }
+        validate(resume, index);
         saveToStorage(resume, index);
         size++;
     }
@@ -30,12 +31,6 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
     @Override
     protected void updateResumeInStorage(Resume resume, int index) {
         storage[index] = resume;
-    }
-
-    @Override
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
     }
 
     @Override
@@ -63,6 +58,7 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
         size--;
     }
 
+    @Override
     public Resume[] getAll() {
         return Arrays.stream(storage)
                 .filter(Objects::nonNull)
