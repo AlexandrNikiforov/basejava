@@ -19,17 +19,13 @@ public class ListStorage extends AbstractStorage {
         }
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid(), ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
-        } else {
-            storage.set(index, resume);
-        }
+    @Override
+    protected void updateResumeInStorage(Resume resume, int index) {
+        storage.set(index, resume);
     }
 
     @Override
-    protected  Resume getFromStorage(int index) {
+    protected Resume getFromStorage(int index) {
         return storage.get(index);
     }
 

@@ -17,7 +17,7 @@ public abstract class AbstractStorage {
     protected static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the " +
             "resume with uuid: ";
     protected static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
-//    protected final Collection<Resume> storage;
+    //    protected final Collection<Resume> storage;
     protected int size;
 
 //    public AbstractStorage(Collection<Resume> storage) {
@@ -26,7 +26,7 @@ public abstract class AbstractStorage {
 
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
-        validate (resume, index);
+        validate(resume, index);
         saveToStorage(resume, index);
     }
 
@@ -37,6 +37,17 @@ public abstract class AbstractStorage {
         }
         return getFromStorage(index);
     }
+
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(resume.getUuid(), ERROR_TEXT_NO_SUCH_RESUME + resume.getUuid());
+        } else {
+            updateResumeInStorage(resume, index);
+        }
+    }
+
+    protected abstract void updateResumeInStorage(Resume resume, int index);
 
     protected abstract Resume getFromStorage(int index);
 

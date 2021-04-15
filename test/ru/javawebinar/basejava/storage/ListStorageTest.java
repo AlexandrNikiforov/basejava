@@ -62,8 +62,6 @@ class ListStorageTest {
         assertThrows(NotExistStorageException.class, executable);
     }
 
-
-    @Disabled
     @Test
     void updateShouldUpdateResumeIfResumeExistsInStorage() {
         Resume newResume = new Resume(UUID_01);
@@ -71,9 +69,7 @@ class ListStorageTest {
 
         assertTrue(newResume == storage.get(UUID_01));
     }
-//    }
 
-    @Disabled
     @Test
     void updateShouldThrowIfResumeDoesNotExistInStorage() {
         Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
