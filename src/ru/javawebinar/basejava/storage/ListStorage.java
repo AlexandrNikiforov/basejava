@@ -12,6 +12,16 @@ public class ListStorage extends AbstractStorage {
     List<Resume> storage = new ArrayList<>();
 
     @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
+    }
+
+    @Override
     protected void validate(Resume resume, int index) {
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid(),

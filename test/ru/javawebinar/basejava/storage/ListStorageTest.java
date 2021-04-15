@@ -76,4 +76,29 @@ class ListStorageTest {
 
         assertThrows(NotExistStorageException.class, executable);
     }
+
+    @Test
+    void sizeShouldReturnNumberOfResumesInStorage() {
+        int expected = 3;
+        int actual = storage.size();
+
+        assertEquals(expected, actual);
+    }
+
+//    @Disabled
+//    @Test
+//    void clearShouldFillArrayWithNullAndMakeSizeZero() {
+//        Resume[] expectedResumes = new Resume[0];
+//        storage.clear();
+//        Resume[] actualResumes = storage.getAll();
+//
+//        int expectedSize = 0;
+//        int actualSize = storage.size();
+//
+//        assertAll(
+//                () -> assertArrayEquals(expectedResumes, actualResumes),
+//                () -> assertEquals(expectedSize, actualSize)
+//        );
+//    }
+//
 }

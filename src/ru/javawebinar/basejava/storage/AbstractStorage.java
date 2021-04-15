@@ -49,13 +49,13 @@ public abstract class AbstractStorage {
 
     protected abstract void updateResumeInStorage(Resume resume, int index);
 
+    protected abstract int size ();
+
     protected abstract Resume getFromStorage(int index);
 
     protected abstract void validate(Resume resume, int index);
 
-//    public void clear() {
-//        storage.clear();
-//    }
+    protected abstract void clear();
 
     protected abstract int getIndex(String uuid);
 

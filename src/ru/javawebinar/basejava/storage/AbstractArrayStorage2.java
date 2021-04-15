@@ -32,6 +32,7 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
         storage[index] = resume;
     }
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -70,6 +71,7 @@ public abstract class AbstractArrayStorage2 extends AbstractStorage {
                 .toArray(Resume[]::new);
     }
 
+    @Override
     public int size() {
         return size;
     }
