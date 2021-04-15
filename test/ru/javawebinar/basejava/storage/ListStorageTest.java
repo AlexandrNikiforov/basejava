@@ -33,7 +33,6 @@ class ListStorageTest {
         storage.save(RESUME_3);
     }
 
-
     @Test
     void saveShouldAddResumeInStorageIfResumeNotExist() {
         Resume expectedResume = new Resume(UUID_04);
@@ -96,20 +95,14 @@ class ListStorageTest {
         assertEquals(expected, actual);
     }
 
-//    @Disabled
-//    @Test
-//    void clearShouldFillArrayWithNullAndMakeSizeZero() {
-//        Resume[] expectedResumes = new Resume[0];
-//        storage.clear();
-//        Resume[] actualResumes = storage.getAll();
-//
-//        int expectedSize = 0;
-//        int actualSize = storage.size();
-//
-//        assertAll(
-//                () -> assertArrayEquals(expectedResumes, actualResumes),
-//                () -> assertEquals(expectedSize, actualSize)
-//        );
-//    }
-//
+    @Test
+    void clearShouldFillArrayWithNullAndMakeSizeZero() {
+        storage.clear();
+
+        int expected = 0;
+        int actual = storage.size();
+
+        assertEquals(expected, actual);
+    }
+
 }
