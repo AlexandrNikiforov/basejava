@@ -34,10 +34,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void validate(Resume resume, int index) {
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-        }
+        checkIfResumeExist(resume, index);
         if (size == STORAGE_CAPACITY) {
             throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }
@@ -68,8 +65,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
-
-//    protected abstract int getIndex(String uuid);
 
     protected abstract void saveToStorage(Resume resume, int index);
 

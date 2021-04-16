@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Collections;
 
 public class ListStorage extends AbstractStorage {
 
-    private List<Resume> storage = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -41,10 +40,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void validate(Resume resume, int index) {
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-        }
+        checkIfResumeExist(resume, index);
     }
 
     @Override
