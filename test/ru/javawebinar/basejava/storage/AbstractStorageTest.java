@@ -13,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
- abstract class AbstractStorageTest {
+abstract class AbstractStorageTest {
 
-    private final Storage storage;
+    protected final Storage storage;
 
-    private static final String UUID_01 = "uuid01";
-    private static final Resume RESUME_1 = new Resume(UUID_01);
-    private static final String UUID_02 = "uuid02";
-    private static final Resume RESUME_2 = new Resume(UUID_02);
-    private static final String UUID_03 = "uuid03";
-    private static final Resume RESUME_3 = new Resume(UUID_03);
-    private static final String UUID_04 = "uuid04";
-    private static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
+    protected static final String UUID_01 = "uuid01";
+    protected static final Resume RESUME_1 = new Resume(UUID_01);
+    protected static final String UUID_02 = "uuid02";
+    protected static final Resume RESUME_2 = new Resume(UUID_02);
+    protected static final String UUID_03 = "uuid03";
+    protected static final Resume RESUME_3 = new Resume(UUID_03);
+    protected static final String UUID_04 = "uuid04";
+    protected static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -39,9 +39,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
     }
 
     @Test
-    void clearShouldFillArrayWithNull() {
+    void clearShouldFillStorageWithNullAndMakeSizeZero() {
         storage.clear();
+        assertSizeEqualsZero();
+    }
 
+    protected void assertSizeEqualsZero() {
         int expected = 0;
         int actual = storage.size();
 
@@ -65,6 +68,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
     @Test
     void saveShouldAddResumeInStorageIfResumeNotExist() {
+        assertResumeEqualsWhenSaved();
+    }
+
+    protected void assertResumeEqualsWhenSaved() {
         Resume expectedResume = new Resume(UUID_04);
         storage.save(NON_EXISTENT_RESUME);
         Resume actualResume = storage.get(expectedResume.getUuid());

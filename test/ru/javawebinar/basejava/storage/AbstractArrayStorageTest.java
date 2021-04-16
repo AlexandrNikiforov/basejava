@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import ru.javawebinar.basejava.exceptions.ExistStorageException;
@@ -8,76 +7,44 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
-abstract class AbstractArrayStorageTest {
-
-    private final Storage storage;
-
-    private static final String UUID_01 = "uuid01";
-    private static final Resume RESUME_1 = new Resume(UUID_01);
-    private static final String UUID_02 = "uuid02";
-    private static final Resume RESUME_2 = new Resume(UUID_02);
-    private static final String UUID_03 = "uuid03";
-    private static final Resume RESUME_3 = new Resume(UUID_03);
-    private static final String UUID_04 = "uuid04";
-    private static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
+abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
-        this.storage = storage;
+        super(storage);
     }
 
-    @BeforeEach
-    void init() {
-        storage.clear();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
-    }
-
+    @Override
     @Test
-    void clearShouldFillArrayWithNullAndMakeSizeZero() {
+    void clearShouldFillStorageWithNullAndMakeSizeZero() {
         Resume[] expectedResumes = new Resume[0];
+
         storage.clear();
         Resume[] actualResumes = storage.getAll();
 
-        int expectedSize = 0;
-        int actualSize = storage.size();
-
         assertAll(
                 () -> assertArrayEquals(expectedResumes, actualResumes),
-                () -> assertEquals(expectedSize, actualSize)
+                () -> assertSizeEqualsZero()
         );
-    }
-
-    @Test
-    void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = new Resume(UUID_01);
-        storage.update(newResume);
-
-        assertTrue(newResume == storage.get(UUID_01));
-    }
-
-    @Test
-    void updateShouldThrowIfResumeDoesNotExistInStorage() {
-        Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
-
-        assertThrows(NotExistStorageException.class, executable);
     }
 
     @Test
     void saveShouldAddResumeInStorageIfResumeNotExist() {
-        Resume expectedResume = new Resume(UUID_04);
-        storage.save(NON_EXISTENT_RESUME);
-        Resume actualResume = storage.get(expectedResume.getUuid());
+        assertAll(
+                this::assertResumeEqualsWhenSaved,
+                this::assertSizeEqualsWhenSaved
+        );
+    }
 
+    protected void assertSizeEqualsWhenSaved() {
         int expectedSize = 4;
         int actualSize = storage.size();
-
-        assertAll(
-                () -> assertEquals(expectedResume, actualResume),
-                () -> assertEquals(expectedSize, actualSize)
-        );
+        assertEquals(expectedSize, actualSize);
     }
 
     @Test
