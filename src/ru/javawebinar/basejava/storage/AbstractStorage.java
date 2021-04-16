@@ -3,6 +3,8 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+
 public abstract class AbstractStorage implements Storage {
 
     protected static final String ERROR_TEXT_NO_SUCH_RESUME =
@@ -45,13 +47,18 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
+    protected int getIndex(String uuid) {
+        Resume searchResume = new Resume(uuid);
+        return getIndexFromStorage(searchResume);
+    }
+
+    protected abstract int getIndexFromStorage(Resume searchResume);
+
     protected abstract void updateResumeInStorage(Resume resume, int index);
 
     protected abstract Resume getFromStorage(int index);
 
     protected abstract void validate(Resume resume, int index);
-
-    protected abstract int getIndex(String uuid);
 
     protected abstract void saveToStorage(Resume resume, int index);
 

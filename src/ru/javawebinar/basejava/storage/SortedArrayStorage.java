@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
@@ -21,8 +22,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+    protected int getIndexFromStorage(Resume searchResume) {
+        return Arrays.binarySearch(storage, 0, size, searchResume);
     }
 }

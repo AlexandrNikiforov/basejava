@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class ListStorage extends AbstractStorage {
 
-    List<Resume> storage = new ArrayList<>();
+    private List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -48,8 +48,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchResume = new Resume(uuid);
+    protected int getIndexFromStorage(Resume searchResume) {
         return Collections.binarySearch(storage, searchResume);
     }
 
