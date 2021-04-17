@@ -12,6 +12,12 @@ public class MapStorage2 extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
+    public void update(Resume resume) {
+        checkIfResumeAbsent(resume.getUuid());
+        updateResumeInStorage(resume);
+    }
+
+    @Override
     public void save(Resume resume) {
         validate(resume);
         saveToStorage(resume);
@@ -24,6 +30,12 @@ public class MapStorage2 extends AbstractStorage {
     }
 
     @Override
+    public void delete(String uuid) {
+        checkIfResumeAbsent(uuid);
+        deleteFromStorage(uuid);
+    }
+
+    @Override
     protected void checkIfResumeAbsent(String uuid, int index) {
         //not implemented
     }
@@ -32,7 +44,6 @@ public class MapStorage2 extends AbstractStorage {
         if (!storage.containsKey(uuid)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
-
     }
 
     @Override
@@ -54,7 +65,7 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     protected void updateResumeInStorage(Resume resume, int index) {
-        storage.put(resume.getUuid(), resume);
+        //not implemented
     }
 
     @Override
@@ -68,7 +79,7 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     protected void validate(Resume resume, int index) {
-        checkIfResumeExist(resume, index);
+        //not implemented
     }
 
     protected void validate(Resume resume) {
@@ -77,10 +88,7 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     protected void checkIfResumeExist(Resume resume, int index) {
-        if (storage.containsKey(resume.getUuid())) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-        }
+    //not implemented
     }
 
     protected void checkIfResumeExist(Resume resume) {
@@ -106,6 +114,14 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     protected void deleteFromStorage(int index) {
-        storage.remove(index);
+//not implemented
+    }
+
+    protected void deleteFromStorage(String uuid) {
+        storage.remove(uuid);
+    }
+
+    protected void updateResumeInStorage(Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 }
