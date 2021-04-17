@@ -40,7 +40,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void validate(Resume resume, int index) {
-        checkIfResumeExist(resume, index);
+        checkIfResumeExist(resume, index >= 0);
     }
 
     @Override

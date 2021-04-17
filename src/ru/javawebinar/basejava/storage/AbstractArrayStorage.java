@@ -33,7 +33,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void validate(Resume resume, int index) {
-        checkIfResumeExist(resume, index);
+        checkIfResumeExist(resume, index >= 0);
         if (size == STORAGE_CAPACITY) {
             throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }

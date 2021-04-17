@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -83,19 +82,7 @@ public class MapStorage2 extends AbstractStorage {
     }
 
     protected void validate(Resume resume) {
-        checkIfResumeExist(resume);
-    }
-
-    @Override
-    protected void checkIfResumeExist(Resume resume, int index) {
-    //not implemented
-    }
-
-    protected void checkIfResumeExist(Resume resume) {
-        if (storage.containsKey(resume.getUuid())) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-        }
+        checkIfResumeExist(resume, storage.containsKey(resume.getUuid()));
     }
 
     @Override

@@ -51,19 +51,12 @@ public abstract class AbstractStorage implements Storage {
         return getIndexFromStorage(searchResume);
     }
 
-    protected void checkIfResumeExist(Resume resume, int index) { //TODO: try to put predicate instead of index
-        if (index >= 0) {
+    protected void checkIfResumeExist(Resume resume, boolean predicate) {
+        if (predicate) {
             throw new ExistStorageException(resume.getUuid(),
                     ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
         }
     }
-
-//    protected void checkIfResumeExist(Resume resume, int index) {
-//        if (index >= 0) {
-//            throw new ExistStorageException(resume.getUuid(),
-//                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
-//        }
-//    }
 
     protected abstract int getIndexFromStorage(Resume searchResume);
 
