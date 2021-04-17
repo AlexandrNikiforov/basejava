@@ -14,34 +14,30 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        checkIfResumeAbsent(resume.getUuid(), index);
-        updateResumeInStorage(resume, index);
+        checkIfResumeAbsent(resume.getUuid());
+        updateResumeInStorage(resume);
     }
 
     @Override
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        validate(resume, index);
-        saveToStorage(resume, index);
+        validate(resume);
+        saveToStorage(resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        checkIfResumeAbsent(uuid, index);
-        return getFromStorage(index);
+        checkIfResumeAbsent(uuid);
+        return getFromStorage(uuid);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        checkIfResumeAbsent(uuid, index);
-        deleteFromStorage(index);
+        checkIfResumeAbsent(uuid);
+        deleteFromStorage(uuid);
     }
 
-    protected void checkIfResumeAbsent(String uuid, int index) {
-        if (index < 0) {
+    protected void checkIfResumeAbsent(String uuid) {
+        if (getIndex(uuid) < 0) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
     }
@@ -60,13 +56,13 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getIndexFromStorage(Resume searchResume);
 
-    protected abstract void updateResumeInStorage(Resume resume, int index);
+    protected abstract void updateResumeInStorage(Resume resume);
 
-    protected abstract Resume getFromStorage(int index);
+    protected abstract Resume getFromStorage(String uuid);
 
-    protected abstract void validate(Resume resume, int index);
+    protected abstract void validate(Resume resume);
 
-    protected abstract void saveToStorage(Resume resume, int index);
+    protected abstract void saveToStorage(Resume resume);
 
-    protected abstract void deleteFromStorage(int index);
+    protected abstract void deleteFromStorage(String uuid);
 }

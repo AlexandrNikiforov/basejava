@@ -3,12 +3,12 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void saveToStorage(Resume resume, int index) {
+    protected void saveToStorage(Resume resume) {
+        int index = getIndex(resume.getUuid());
         index = -index - 1;
         if (index <= size - 1) {
             System.arraycopy(storage, index, storage, (index + 1), (size - index));
@@ -17,7 +17,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
+    protected void deleteFromStorage(String uuid) {
+        int index = getIndex(uuid);
         System.arraycopy(storage, (index + 1), storage, (index), (size - index) - 1);
     }
 
