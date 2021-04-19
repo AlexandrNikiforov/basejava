@@ -37,11 +37,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getKeyIfResumeExist(String uuid) {
+    protected Object getKeyIfResumeExist(String uuid) {
         if (!storage.containsKey(uuid)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
-        return getIndex(uuid);
+        return getIndexFromStorage(new Resume(uuid));
     }
 
     @Override
@@ -62,8 +62,8 @@ public class MapStorage extends AbstractStorage {
 
     //The method is not supported by MapStorage
     @Override
-    protected int getIndexFromStorage(Resume searchResume) {
-        return -1;
+    protected Object getIndexFromStorage(Resume searchResume) {
+        return searchResume.getUuid();
     }
 
     @Override

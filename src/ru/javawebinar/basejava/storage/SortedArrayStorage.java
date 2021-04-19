@@ -29,7 +29,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int getIndexFromStorage(Resume searchResume) {
+    protected Object getIndexFromStorage(Resume searchResume) {
         return Arrays.binarySearch(storage,0, size, searchResume, RESUME_COMPARATOR);
     }
 }

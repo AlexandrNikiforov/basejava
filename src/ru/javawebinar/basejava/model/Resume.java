@@ -45,9 +45,4 @@ public class Resume {
     public int hashCode() {
         return uuid.hashCode();
     }
-
-//    @Override
-//    public int compareTo(Resume resume) {
-//        return uuid.compareTo(resume.uuid);
-//    }
 }

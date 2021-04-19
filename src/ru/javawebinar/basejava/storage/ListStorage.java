@@ -14,7 +14,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void save(Resume resume) {
-        int searchKey = getKeyIfResumeNotExist(resume.getUuid(), getIndex(resume.getUuid()) >= 0);
+        int searchKey = (int) getKeyIfResumeNotExist(resume.getUuid(), (getIndex(resume.getUuid())) >= 0);
         saveToStorage(resume, searchKey);
     }
 
@@ -51,12 +51,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResumeInStorage(Resume resume) {
-        storage.set(getIndex(resume.getUuid()), resume);
+        storage.set((int) getIndex(resume.getUuid()), resume);
     }
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage.get(getIndex(uuid));
+        return storage.get((int) getIndex(uuid));
     }
 
 //    @Override
@@ -65,7 +65,7 @@ public class ListStorage extends AbstractStorage {
 //    }
 
     @Override
-    protected int getIndexFromStorage(Resume searchResume) {
+    protected Object getIndexFromStorage(Resume searchResume) {
         return Collections.binarySearch(storage, searchResume, RESUME_COMPARATOR);
     }
 
@@ -79,4 +79,11 @@ public class ListStorage extends AbstractStorage {
         getKeyIfResumeExist(uuid);
         storage.remove(getIndex(uuid));
     }
+
+    private int getIndex(String uuid) {
+        Resume searchResume = new Resume(uuid);
+        return (int) getIndexFromStorage(searchResume);
+    }
+
+
 }

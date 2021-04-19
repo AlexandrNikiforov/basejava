@@ -31,34 +31,28 @@ public abstract class AbstractStorage implements Storage {
         return getFromStorage(uuid);
     }
 
-    @Override
-    public abstract void delete(String uuid);
-//    {
-//        checkIfResumeAbsent(uuid);
-//        deleteFromStorage(uuid);
-//    }
-
-    protected int getKeyIfResumeExist(String uuid) {
-        if (getIndex(uuid) < 0) {
+    protected Object getKeyIfResumeExist(String uuid) {
+        if ((int)getIndexFromStorage(new Resume(uuid)) < 0 ) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
-        return getIndex(uuid);
+        return getIndexFromStorage(new Resume(uuid));
     }
 
-    protected int getIndex(String uuid) {
-        Resume searchResume = new Resume(uuid);
-        return getIndexFromStorage(searchResume);
-    }
+//    protected int getIndex(String uuid) {
+//        Resume searchResume = new Resume(uuid);
+//        return getIndexFromStorage(searchResume);
+//    }
 
-    protected int getKeyIfResumeNotExist(String uuid, boolean predicate) {
+    protected Object getKeyIfResumeNotExist(String uuid, boolean predicate) {
         if (predicate) {
             throw new ExistStorageException(uuid,
                     ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + uuid);
         }
-        return getIndex(uuid);
+        return getIndexFromStorage(new Resume(uuid));
+//        return getIndex(uuid);
     }
 
-    protected abstract int getIndexFromStorage(Resume searchResume);
+    protected abstract Object getIndexFromStorage(Resume searchResume);
 
     protected abstract void updateResumeInStorage(Resume resume);
 
