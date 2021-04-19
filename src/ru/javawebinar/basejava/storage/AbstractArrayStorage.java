@@ -20,8 +20,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void save(Resume resume) {
+        int searchKey = getKeyIfResumeNotExist(resume.getUuid(), getIndex(resume.getUuid()) >= 0);
         validate(resume);
-        saveToStorage(resume);
+        saveToStorage(resume, searchKey);
         size++;
     }
 
@@ -30,9 +31,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[getIndex(resume.getUuid())] = resume;
     }
 
-    @Override
     protected void validate(Resume resume) {
-        checkIfResumeExist(resume, getIndex(resume.getUuid()) >= 0);
         if (size == STORAGE_CAPACITY) {
             throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }
@@ -45,8 +44,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void delete(String uuid) {
-        checkIfResumeAbsent(uuid);
-        deleteFromStorage(uuid);
+        int searchKey = getKeyIfResumeExist(uuid);
+        deleteFromStorage(searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -63,7 +62,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract void saveToStorage(Resume resume);
+    protected abstract void saveToStorage(Resume resume, int searchKey);
 
-    protected abstract void deleteFromStorage(String uuid);
+    protected abstract void deleteFromStorage(int searchKey);
 }

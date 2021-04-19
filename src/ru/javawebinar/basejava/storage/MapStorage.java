@@ -12,33 +12,36 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void update(Resume resume) {
-        checkIfResumeAbsent(resume.getUuid());
+        getKeyIfResumeExist(resume.getUuid());
         updateResumeInStorage(resume);
     }
 
     @Override
     public void save(Resume resume) {
-        validate(resume);
+//        validate(resume);
+        getKeyIfResumeNotExist(resume.getUuid(), storage.containsKey(resume.getUuid()));
         saveToStorage(resume);
     }
 
     @Override
     public Resume get(String uuid) {
-        checkIfResumeAbsent(uuid);
+        getKeyIfResumeExist(uuid);
         return getFromStorage(uuid);
     }
 
     @Override
     public void delete(String uuid) {
-        checkIfResumeAbsent(uuid);
-        deleteFromStorage(uuid);
+        getKeyIfResumeExist(uuid);
+//        deleteFromStorage(uuid);
+        storage.remove(uuid);
     }
 
     @Override
-    protected void checkIfResumeAbsent(String uuid) {
+    protected int getKeyIfResumeExist(String uuid) {
         if (!storage.containsKey(uuid)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
+        return getIndex(uuid);
     }
 
     @Override
@@ -73,18 +76,12 @@ public class MapStorage extends AbstractStorage {
         return storage.get(uuid);
     }
 
-    @Override
-    protected void validate(Resume resume) {
-        checkIfResumeExist(resume, storage.containsKey(resume.getUuid()));
-    }
-
-    @Override
     protected void saveToStorage(Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
-    @Override
-    protected void deleteFromStorage(String uuid) {
-        storage.remove(uuid);
-    }
+//    @Override
+//    protected void deleteFromStorage(String uuid) {
+//        storage.remove(uuid);
+//    }
 }

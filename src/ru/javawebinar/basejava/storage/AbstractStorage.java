@@ -14,32 +14,35 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        checkIfResumeAbsent(resume.getUuid());
+        getKeyIfResumeExist(resume.getUuid());
         updateResumeInStorage(resume);
     }
 
     @Override
-    public void save(Resume resume) {
-        validate(resume);
-        saveToStorage(resume);
-    }
+    public abstract void save(Resume resume);
+//    {
+//        validate(resume);
+//        saveToStorage(resume);
+//    }
 
     @Override
     public Resume get(String uuid) {
-        checkIfResumeAbsent(uuid);
+        getKeyIfResumeExist(uuid);
         return getFromStorage(uuid);
     }
 
     @Override
-    public void delete(String uuid) {
-        checkIfResumeAbsent(uuid);
-        deleteFromStorage(uuid);
-    }
+    public abstract void delete(String uuid);
+//    {
+//        checkIfResumeAbsent(uuid);
+//        deleteFromStorage(uuid);
+//    }
 
-    protected void checkIfResumeAbsent(String uuid) {
+    protected int getKeyIfResumeExist(String uuid) {
         if (getIndex(uuid) < 0) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
+        return getIndex(uuid);
     }
 
     protected int getIndex(String uuid) {
@@ -47,11 +50,12 @@ public abstract class AbstractStorage implements Storage {
         return getIndexFromStorage(searchResume);
     }
 
-    protected void checkIfResumeExist(Resume resume, boolean predicate) {
+    protected int getKeyIfResumeNotExist(String uuid, boolean predicate) {
         if (predicate) {
-            throw new ExistStorageException(resume.getUuid(),
-                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
+            throw new ExistStorageException(uuid,
+                    ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + uuid);
         }
+        return getIndex(uuid);
     }
 
     protected abstract int getIndexFromStorage(Resume searchResume);
@@ -60,9 +64,5 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Resume getFromStorage(String uuid);
 
-    protected abstract void validate(Resume resume);
-
-    protected abstract void saveToStorage(Resume resume);
-
-    protected abstract void deleteFromStorage(String uuid);
+//    protected abstract void deleteFromStorage(String uuid);
 }
