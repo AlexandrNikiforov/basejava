@@ -5,10 +5,12 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
+    private final Predicate<Resume> storageContainsTheResume = resume -> storage.containsKey(resume.getUuid());
 
     @Override
     public void update(Resume resume) {
@@ -18,8 +20,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public void save(Resume resume) {
-//        validate(resume);
-        getKeyIfResumeNotExist(resume.getUuid(), storage.containsKey(resume.getUuid()));
+        getKeyIfResumeNotExist(resume, storageContainsTheResume);
         saveToStorage(resume);
     }
 
@@ -32,7 +33,6 @@ public class MapStorage extends AbstractStorage {
     @Override
     public void delete(String uuid) {
         getKeyIfResumeExist(uuid);
-//        deleteFromStorage(uuid);
         storage.remove(uuid);
     }
 
@@ -60,7 +60,6 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    //The method is not supported by MapStorage
     @Override
     protected Object getIndexFromStorage(Resume searchResume) {
         return searchResume.getUuid();
@@ -79,9 +78,4 @@ public class MapStorage extends AbstractStorage {
     protected void saveToStorage(Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
-
-//    @Override
-//    protected void deleteFromStorage(String uuid) {
-//        storage.remove(uuid);
-//    }
 }

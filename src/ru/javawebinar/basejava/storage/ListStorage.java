@@ -7,30 +7,21 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Collections;
+import java.util.function.Predicate;
 
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> storage = new ArrayList<>();
+    protected final Predicate<Resume> storageContainsTheResume = resume -> (getIndex(resume.getUuid())) >= 0;
 
     @Override
     public void save(Resume resume) {
-        int searchKey = (int) getKeyIfResumeNotExist(resume.getUuid(), (getIndex(resume.getUuid())) >= 0);
+        int searchKey = (int) getKeyIfResumeNotExist(resume, storageContainsTheResume);
         saveToStorage(resume, searchKey);
     }
 
-    //Comparator is implemented as anonymous class
-    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
-        @Override
-        public int compare(Resume o1, Resume o2) {
-            return o1.getUuid().compareTo(o2.getUuid());
-        }
-    };
-
-//    Comparator is implemented as lambda expression
-//    Comparator<Resume> resumeComparator = (resume1, resume2) -> resume1.getUuid().compareTo(resume2.getUuid());
-
-    //Comparator is implemented using Comparator.comparing static method
-//    Comparator<Resume> resumeComparator = Comparator.comparing(Resume::getUuid);
+    private static final Comparator<Resume> RESUME_COMPARATOR = (resume1, resume2) ->
+            resume1.getUuid().compareTo(resume2.getUuid());
 
     @Override
     public void clear() {
@@ -51,18 +42,13 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResumeInStorage(Resume resume) {
-        storage.set((int) getIndex(resume.getUuid()), resume);
+        storage.set(getIndex(resume.getUuid()), resume);
     }
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage.get((int) getIndex(uuid));
+        return storage.get(getIndex(uuid));
     }
-
-//    @Override
-//    protected void validate(Resume resume) {
-//        getKeyIfResumeNotExist(resume.getUuid(), getIndex(resume.getUuid()) >= 0);
-//    }
 
     @Override
     protected Object getIndexFromStorage(Resume searchResume) {
@@ -84,6 +70,4 @@ public class ListStorage extends AbstractStorage {
         Resume searchResume = new Resume(uuid);
         return (int) getIndexFromStorage(searchResume);
     }
-
-
 }

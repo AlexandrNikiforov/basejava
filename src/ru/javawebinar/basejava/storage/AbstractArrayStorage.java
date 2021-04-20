@@ -5,10 +5,12 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_CAPACITY = 10_000;
+    protected final Predicate<Resume> storageContainsTheResume = (r) -> (int) (getIndex(r.getUuid())) >= 0;
     protected final Resume[] storage = new Resume[STORAGE_CAPACITY];
     protected int size;
 
@@ -19,9 +21,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+
     public void save(Resume resume) {
-        int searchKey = (int) getKeyIfResumeNotExist(resume.getUuid(),
-                (int)getIndexFromStorage(new Resume(resume.getUuid())) >= 0);
+        int searchKey = (int) getKeyIfResumeNotExist(resume,
+                storageContainsTheResume);
         validate(resume);
         saveToStorage(resume, searchKey);
         size++;
@@ -30,7 +33,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void updateResumeInStorage(Resume resume) {
 
-        storage[(int)getIndexFromStorage(new Resume(resume.getUuid()))] = resume;
+        storage[(int) getIndex(resume.getUuid())] = resume;
     }
 
     protected void validate(Resume resume) {
@@ -41,7 +44,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage[(int)getIndexFromStorage(new Resume(uuid))];
+        return storage[(int) getIndex(uuid)];
     }
 
     @Override
@@ -63,6 +66,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
+
+    public Object getIndex(String uuid) {
+        Resume searchResume = new Resume(uuid);
+        return getIndexFromStorage(searchResume);
+    }
+
 
     protected abstract void saveToStorage(Resume resume, int searchKey);
 
