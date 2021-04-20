@@ -2,12 +2,13 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Collections;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
 
@@ -33,6 +34,14 @@ public class ListStorage extends AbstractStorage {
         return storage.stream()
                 .filter(Objects::nonNull)
                 .toArray(Resume[]::new);
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return storage.stream()
+                .filter(Objects::nonNull)
+                .sorted(RESUME_NAME_COMPARATOR)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -4,8 +4,10 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MapStorage extends AbstractStorage {
 
@@ -54,6 +56,15 @@ public class MapStorage extends AbstractStorage {
         return storage.values().stream()
                 .toArray(Resume[]::new);
     }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return storage.values().stream()
+                .sorted(RESUME_NAME_COMPARATOR)
+                .collect(Collectors.toList());
+    }
+
+
 
     @Override
     public int size() {

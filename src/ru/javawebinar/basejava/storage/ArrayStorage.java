@@ -26,4 +26,12 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
         return -1;
     }
+
+//    @Override
+//    public List<Resume> getAllSorted() {
+//        return Arrays.stream(storage)
+//                .filter(Objects::nonNull)
+//                .sorted()
+//                .collect(Collectors.toList());
+//    }
 }

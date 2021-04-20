@@ -7,6 +7,9 @@ import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,11 +21,11 @@ abstract class AbstractStorageTest {
     protected final Storage storage;
 
     protected static final String UUID_01 = "uuid01";
-    protected static final Resume RESUME_1 = new Resume(UUID_01);
+    protected static final Resume RESUME_1 = new Resume(UUID_01, "Zoe Grey");
     protected static final String UUID_02 = "uuid02";
-    protected static final Resume RESUME_2 = new Resume(UUID_02);
+    protected static final Resume RESUME_2 = new Resume(UUID_02, "John Brown");
     protected static final String UUID_03 = "uuid03";
-    protected static final Resume RESUME_3 = new Resume(UUID_03);
+    protected static final Resume RESUME_3 = new Resume(UUID_03, "Alex White");
     protected static final String UUID_04 = "uuid04";
     protected static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
 
@@ -123,6 +126,14 @@ abstract class AbstractStorageTest {
 
     @Test
     void getAllShouldReturnArrayOfExistedResumes() {
+        List<Resume> expected = Arrays.asList(RESUME_3, RESUME_2, RESUME_1);
+        List<Resume> actual = storage.getAllSorted();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllSortedShouldReturnSortedListOfExistedResumes() {
         Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
         Resume[] actual = storage.getAll();
 

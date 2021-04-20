@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 public abstract class AbstractStorage implements Storage {
@@ -13,6 +14,9 @@ public abstract class AbstractStorage implements Storage {
     protected static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the " +
             "resume with uuid: ";
     protected static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
+
+    protected static final Comparator<Resume> RESUME_NAME_COMPARATOR = (resume1, resume2) ->
+            resume1.getFullName().compareTo(resume2.getFullName());
 
     @Override
     public void update(Resume resume) {
