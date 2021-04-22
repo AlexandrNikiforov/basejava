@@ -14,8 +14,10 @@ public abstract class AbstractStorage implements Storage {
             "resume with uuid: ";
     protected static final String ERROR_TEXT_STORAGE_OUT_OF_SPACE = "ERROR: no space in the storage";
 
-    protected static final Comparator<Resume> RESUME_NAME_COMPARATOR = (resume1, resume2) ->
-            resume1.getFullName().compareTo(resume2.getFullName());
+    protected static final Comparator<Resume> RESUME_NAME_COMPARATOR =
+            Comparator.comparing(Resume::getFullName);
+
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract void updateResumeInStorage(Resume resume, Object searchKey);
 
@@ -25,33 +27,31 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
-    protected abstract Resume getFromStorage(Object searchKey, String uuid);
-
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract Resume getFromStorage(Object searchKey);
 
     @Override
     public void update(Resume resume) {
-        Object searchKey = getKeyIfResumeExist(resume.getUuid());
+        Object searchKey = getKeyIfResumeExists(resume.getUuid());
         updateResumeInStorage(resume, searchKey);
     }
 
     public void save(Resume resume) {
-        Object searchKey = getKeyIfResumeNotExist(resume);
+        Object searchKey = getKeyIfResumeNotExists(resume);
         doSave(resume, searchKey);
     }
 
     public void delete(String uuid) {
-        Object searchKey = getKeyIfResumeExist(uuid);
+        Object searchKey = getKeyIfResumeExists(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getKeyIfResumeExist(uuid);
-        return getFromStorage(searchKey, uuid);
+        Object searchKey = getKeyIfResumeExists(uuid);
+        return getFromStorage(searchKey);
     }
 
-    protected Object getKeyIfResumeExist(String uuid) {
+    private Object getKeyIfResumeExists(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
@@ -59,7 +59,7 @@ public abstract class AbstractStorage implements Storage {
         return getSearchKey(uuid);
     }
 
-    protected Object getKeyIfResumeNotExist(Resume resume) {
+    private Object getKeyIfResumeNotExists(Resume resume) {
         Object searchKey = getSearchKey(resume.getUuid());
         if (isExist(searchKey)) {
             throw new ExistStorageException(resume.getUuid(),

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
-//    private final Predicate<Resume> storageContainsTheResume = resume -> storage.containsKey(resume.getUuid());
 
     @Override
     public void updateResumeInStorage(Resume resume, Object searchKey) {
@@ -23,8 +22,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getFromStorage(Object searchKey, String uuid) {
-        return storage.get((String) searchKey);
+    protected Resume getFromStorage(Object searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override
@@ -63,15 +62,5 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected Object getSearchKey(String uuid) {
         return uuid;
-    }
-
-//    @Override
-//    protected void updateResumeInStorage(Resume resume) {
-//        storage.put(resume.getUuid(), resume);
-//    }
-
-
-    protected void saveToStorage(Resume resume) {
-        storage.put(resume.getUuid(), resume);
     }
 }

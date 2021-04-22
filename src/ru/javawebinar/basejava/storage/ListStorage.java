@@ -12,11 +12,10 @@ import java.util.stream.Collectors;
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> storage = new ArrayList<>();
-//    protected final Predicate<Resume> storageContainsTheResume = resume -> (getIndex(resume.getUuid())) >= 0;
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        saveToStorage(resume, (int) searchKey);
+        saveToStorage(resume, (Integer) searchKey);
     }
 
     @Override
@@ -26,11 +25,10 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
+        return (Integer) searchKey >= 0;
     }
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (resume1, resume2) ->
-            resume1.getUuid().compareTo(resume2.getUuid());
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
     public void clear() {
@@ -59,16 +57,16 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResumeInStorage(Resume resume, Object searchKey) {
-        storage.set((int) searchKey, resume);
+        storage.set((Integer) searchKey, resume);
     }
 
     @Override
-    protected Resume getFromStorage(Object searchKey, String uuid) {
-        return storage.get((int) searchKey);
+    protected Resume getFromStorage(Object searchKey) {
+        return storage.get((Integer) searchKey);
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume searchResume = new Resume(uuid);
         return Collections.binarySearch(storage, searchResume, RESUME_COMPARATOR);
     }
@@ -77,15 +75,4 @@ public class ListStorage extends AbstractStorage {
         searchKey = -searchKey - 1;
         storage.add(searchKey, resume);
     }
-
-//    @Override
-//    public void delete(String uuid) {
-//        getKeyIfResumeExist(uuid);
-//        storage.remove(getSearchKey(uuid));
-//    }
-
-//    private int getIndex(String uuid) {
-//        Resume searchResume = new Resume(uuid);
-//        return (int) getSearchKey(searchResume);
-//    }
 }
