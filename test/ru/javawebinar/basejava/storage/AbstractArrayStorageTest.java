@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import ru.javawebinar.basejava.exceptions.StorageException;
@@ -19,6 +20,7 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     @Override
     @Test
+    @DisplayName("Clear Should Fill Storage With Null And Make Size Zero")
     void clearShouldFillStorageWithNullAndMakeSizeZero() {
         Resume[] expectedResumes = new Resume[0];
 

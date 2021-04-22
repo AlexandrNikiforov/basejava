@@ -7,18 +7,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> storage = new ArrayList<>();
-    protected final Predicate<Resume> storageContainsTheResume = resume -> (getIndex(resume.getUuid())) >= 0;
+//    protected final Predicate<Resume> storageContainsTheResume = resume -> (getIndex(resume.getUuid())) >= 0;
 
     @Override
-    public void save(Resume resume) {
-        int searchKey = (int) getKeyIfResumeNotExist(resume, storageContainsTheResume);
-        saveToStorage(resume, searchKey);
+    protected void doSave(Resume resume, Object searchKey) {
+        saveToStorage(resume, (int) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        storage.remove((int) searchKey);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
     private static final Comparator<Resume> RESUME_COMPARATOR = (resume1, resume2) ->
@@ -50,17 +58,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResumeInStorage(Resume resume) {
-        storage.set(getIndex(resume.getUuid()), resume);
+    protected void updateResumeInStorage(Resume resume, Object searchKey) {
+        storage.set((int) searchKey, resume);
     }
 
     @Override
-    protected Resume getFromStorage(String uuid) {
-        return storage.get(getIndex(uuid));
+    protected Resume getFromStorage(Object searchKey, String uuid) {
+        return storage.get((int) searchKey);
     }
 
     @Override
-    protected Object getIndexFromStorage(Resume searchResume) {
+    protected Object getSearchKey(String uuid) {
+        Resume searchResume = new Resume(uuid);
         return Collections.binarySearch(storage, searchResume, RESUME_COMPARATOR);
     }
 
@@ -69,14 +78,14 @@ public class ListStorage extends AbstractStorage {
         storage.add(searchKey, resume);
     }
 
-    @Override
-    public void delete(String uuid) {
-        getKeyIfResumeExist(uuid);
-        storage.remove(getIndex(uuid));
-    }
+//    @Override
+//    public void delete(String uuid) {
+//        getKeyIfResumeExist(uuid);
+//        storage.remove(getSearchKey(uuid));
+//    }
 
-    private int getIndex(String uuid) {
-        Resume searchResume = new Resume(uuid);
-        return (int) getIndexFromStorage(searchResume);
-    }
+//    private int getIndex(String uuid) {
+//        Resume searchResume = new Resume(uuid);
+//        return (int) getSearchKey(searchResume);
+//    }
 }

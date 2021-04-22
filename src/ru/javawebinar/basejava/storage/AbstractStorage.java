@@ -5,7 +5,6 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Comparator;
-import java.util.function.Predicate;
 
 public abstract class AbstractStorage implements Storage {
 
@@ -18,36 +17,54 @@ public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_NAME_COMPARATOR = (resume1, resume2) ->
             resume1.getFullName().compareTo(resume2.getFullName());
 
+    protected abstract void updateResumeInStorage(Resume resume, Object searchKey);
+
+    protected abstract void doSave(Resume resume, Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract Resume getFromStorage(Object searchKey, String uuid);
+
+    protected abstract Object getSearchKey(String uuid);
+
     @Override
     public void update(Resume resume) {
-        getKeyIfResumeExist(resume.getUuid());
-        updateResumeInStorage(resume);
+        Object searchKey = getKeyIfResumeExist(resume.getUuid());
+        updateResumeInStorage(resume, searchKey);
+    }
+
+    public void save(Resume resume) {
+        Object searchKey = getKeyIfResumeNotExist(resume);
+        doSave(resume, searchKey);
+    }
+
+    public void delete(String uuid) {
+        Object searchKey = getKeyIfResumeExist(uuid);
+        doDelete(searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        getKeyIfResumeExist(uuid);
-        return getFromStorage(uuid);
+        Object searchKey = getKeyIfResumeExist(uuid);
+        return getFromStorage(searchKey, uuid);
     }
 
     protected Object getKeyIfResumeExist(String uuid) {
-        if ((int) getIndexFromStorage(new Resume(uuid)) < 0) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
-        return getIndexFromStorage(new Resume(uuid));
+        return getSearchKey(uuid);
     }
 
-    protected Object getKeyIfResumeNotExist(Resume resume, Predicate<Resume> storageContainsTheResume) {
-        if (storageContainsTheResume.test(resume)) {
+    protected Object getKeyIfResumeNotExist(Resume resume) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (isExist(searchKey)) {
             throw new ExistStorageException(resume.getUuid(),
                     ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
         }
-        return getIndexFromStorage(new Resume(resume.getUuid()));
+        return getSearchKey(resume.getUuid());
     }
-
-    protected abstract Object getIndexFromStorage(Resume searchResume);
-
-    protected abstract void updateResumeInStorage(Resume resume);
-
-    protected abstract Resume getFromStorage(String uuid);
 }

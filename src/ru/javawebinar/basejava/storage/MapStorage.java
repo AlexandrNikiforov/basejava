@@ -1,49 +1,40 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MapStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
-    private final Predicate<Resume> storageContainsTheResume = resume -> storage.containsKey(resume.getUuid());
+//    private final Predicate<Resume> storageContainsTheResume = resume -> storage.containsKey(resume.getUuid());
 
     @Override
-    public void update(Resume resume) {
-        getKeyIfResumeExist(resume.getUuid());
-        updateResumeInStorage(resume);
+    public void updateResumeInStorage(Resume resume, Object searchKey) {
+        storage.put((String) searchKey, resume);
     }
 
     @Override
-    public void save(Resume resume) {
-        getKeyIfResumeNotExist(resume, storageContainsTheResume);
-        saveToStorage(resume);
+    public void doSave(Resume resume, Object searchKey) {
+        storage.put((String) searchKey, resume);
     }
 
     @Override
-    public Resume get(String uuid) {
-        getKeyIfResumeExist(uuid);
-        return getFromStorage(uuid);
+    protected Resume getFromStorage(Object searchKey, String uuid) {
+        return storage.get((String) searchKey);
     }
 
     @Override
-    public void delete(String uuid) {
-        getKeyIfResumeExist(uuid);
-        storage.remove(uuid);
+    public void doDelete(Object searchKey) {
+        storage.remove((String) searchKey);
     }
 
     @Override
-    protected Object getKeyIfResumeExist(String uuid) {
-        if (!storage.containsKey(uuid)) {
-            throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
-        }
-        return getIndexFromStorage(new Resume(uuid));
+    protected boolean isExist(Object searchKey) {
+        return storage.containsKey((String) searchKey);
     }
 
     @Override
@@ -64,27 +55,21 @@ public class MapStorage extends AbstractStorage {
                 .collect(Collectors.toList());
     }
 
-
-
     @Override
     public int size() {
         return storage.size();
     }
 
     @Override
-    protected Object getIndexFromStorage(Resume searchResume) {
-        return searchResume.getUuid();
-    }
-
-    @Override
-    protected void updateResumeInStorage(Resume resume) {
-        storage.put(resume.getUuid(), resume);
-    }
-
-    @Override
-    protected Resume getFromStorage(String uuid) {
+    protected Object getSearchKey(String uuid) {
         return storage.get(uuid);
     }
+
+//    @Override
+//    protected void updateResumeInStorage(Resume resume) {
+//        storage.put(resume.getUuid(), resume);
+//    }
+
 
     protected void saveToStorage(Resume resume) {
         storage.put(resume.getUuid(), resume);

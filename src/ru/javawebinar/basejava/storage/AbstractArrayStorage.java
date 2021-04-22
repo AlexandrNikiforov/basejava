@@ -6,13 +6,12 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_CAPACITY = 10_000;
-    protected final Predicate<Resume> storageContainsTheResume = (r) -> (int) (getIndex(r.getUuid())) >= 0;
+//    protected final Predicate<Resume> storageContainsTheResume = (r) -> (int) (getIndex(r.getUuid())) >= 0;
     protected final Resume[] storage = new Resume[STORAGE_CAPACITY];
     protected int size;
 
@@ -22,20 +21,32 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    @Override
+    protected abstract Object getSearchKeyFromStorage(Resume searchResume);
 
-    public void save(Resume resume) {
-        int searchKey = (int) getKeyIfResumeNotExist(resume,
-                storageContainsTheResume);
+    protected abstract void saveToStorage(Resume resume, int searchKey);
+
+    //    @Override
+//
+//    public void save(Resume resume) {
+//        int searchKey = (int) getKeyIfResumeNotExist(resume,
+//                storageContainsTheResume);
+//        validate(resume);
+//        saveToStorage(resume, searchKey);
+//        size++;
+
+//    }
+
+    @Override
+    protected void doSave(Resume resume, Object searchKey) {
         validate(resume);
-        saveToStorage(resume, searchKey);
+        int numericSearchKey = (int) searchKey;
+        saveToStorage(resume, numericSearchKey);
         size++;
     }
 
     @Override
-    protected void updateResumeInStorage(Resume resume) {
-
-        storage[(int) getIndex(resume.getUuid())] = resume;
+    protected void updateResumeInStorage(Resume resume, Object searchKey) {
+        storage[(int) searchKey] = resume;
     }
 
     protected void validate(Resume resume) {
@@ -45,17 +56,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getFromStorage(String uuid) {
-        return storage[(int) getIndex(uuid)];
+    protected Resume getFromStorage(Object searchKey, String uuid) {
+        return storage[(int) searchKey];
     }
 
     @Override
-    public void delete(String uuid) {
-        int searchKey = (int) getKeyIfResumeExist(uuid);
-        deleteFromStorage(searchKey);
+    public void doDelete(Object searchKey) {
+        int numericSearchKey = (int) searchKey;
+        deleteFromStorage(numericSearchKey);
         storage[size - 1] = null;
         size--;
     }
+
+    protected abstract void deleteFromStorage(int numericSearchKey);
 
     @Override
     public Resume[] getAll() {
@@ -77,13 +90,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    public Object getIndex(String uuid) {
+    public Object getSearchKey(String uuid) {
         Resume searchResume = new Resume(uuid);
-        return getIndexFromStorage(searchResume);
+        return getSearchKeyFromStorage(searchResume);
     }
 
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
+    }
 
-    protected abstract void saveToStorage(Resume resume, int searchKey);
-
-    protected abstract void deleteFromStorage(int searchKey);
+//    @Override
+//    protected abstract void deleteFromStorage(Integer searchKey);
 }
