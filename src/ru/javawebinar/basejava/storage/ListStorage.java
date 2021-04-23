@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,5 +63,12 @@ public class ListStorage extends AbstractStorage {
             }
         }
         return null;
+    }
+
+    @Override
+    protected List<Resume> doCopy() {
+        List<Resume> resumesCopy = new ArrayList<>();
+        Collections.copy(resumesCopy, storage);
+        return resumesCopy;
     }
 }

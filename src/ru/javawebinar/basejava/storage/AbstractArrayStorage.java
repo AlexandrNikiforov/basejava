@@ -5,8 +5,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
@@ -58,13 +56,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        return Arrays.stream(storage)
-                .filter(Objects::nonNull)
-                .sorted(RESUME_NAME_COMPARATOR)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<Resume> getAllSorted() {
+//        return Arrays.stream(storage)
+//                .filter(Objects::nonNull)
+//                .sorted(RESUME_NAME_COMPARATOR)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public int size() {
@@ -74,5 +72,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected boolean isExist(Object searchKey) {
         return (Integer) searchKey >= 0;
+    }
+
+    @Override
+    protected List<Resume> doCopy() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 }
