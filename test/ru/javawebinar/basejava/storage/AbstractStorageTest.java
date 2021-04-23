@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,13 +20,13 @@ abstract class AbstractStorageTest {
     protected final Storage storage;
 
     protected static final String UUID_01 = "uuid01";
-    protected static final Resume RESUME_1 = new Resume(UUID_01, "Zoe Grey");
+    protected static final Resume RESUME_1 = new Resume(UUID_01, "C Name 1");
     protected static final String UUID_02 = "uuid02";
-    protected static final Resume RESUME_2 = new Resume(UUID_02, "John Brown");
+    protected static final Resume RESUME_2 = new Resume(UUID_02, "B Name 2");
     protected static final String UUID_03 = "uuid03";
-    protected static final Resume RESUME_3 = new Resume(UUID_03, "Alex White");
+    protected static final Resume RESUME_3 = new Resume(UUID_03, "A Name 3");
     protected static final String UUID_04 = "uuid04";
-    protected static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04);
+    protected static final Resume NON_EXISTENT_RESUME = new Resume(UUID_04, "Name 4");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -56,7 +55,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = new Resume(UUID_01);
+        Resume newResume = new Resume(UUID_01, "New name");
         storage.update(newResume);
 
         assertSame(newResume, storage.get(UUID_01));
@@ -75,7 +74,7 @@ abstract class AbstractStorageTest {
     }
 
     protected void assertResumeEqualsWhenSaved() {
-        Resume expectedResume = new Resume(UUID_04);
+        Resume expectedResume = new Resume(UUID_04, "Name 4");
         storage.save(NON_EXISTENT_RESUME);
         Resume actualResume = storage.get(expectedResume.getUuid());
 
@@ -130,14 +129,6 @@ abstract class AbstractStorageTest {
         List<Resume> actual = storage.getAllSorted();
 
         assertEquals(expected, actual);
-    }
-
-    @Test
-    void getAllSortedShouldReturnSortedListOfExistedResumes() {
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        Resume[] actual = storage.getAll();
-
-        assertArrayEquals(expected, actual);
     }
 
     @Test

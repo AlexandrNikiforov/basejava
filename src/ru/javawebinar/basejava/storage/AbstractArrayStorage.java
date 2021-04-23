@@ -59,13 +59,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.stream(storage)
-                .filter(Objects::nonNull)
-                .toArray(Resume[]::new);
-    }
-
-    @Override
     public List<Resume> getAllSorted() {
         return Arrays.stream(storage)
                 .filter(Objects::nonNull)

@@ -51,6 +51,7 @@ public abstract class AbstractStorage implements Storage {
         return getFromStorage(searchKey);
     }
 
+
     private Object getKeyIfResumeExists(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
