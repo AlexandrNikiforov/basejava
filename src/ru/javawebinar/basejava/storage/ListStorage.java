@@ -8,22 +8,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     private final List<Resume> storage = new ArrayList<>();
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Integer searchKey) {
         storage.add(resume);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(Integer searchKey) {
         storage.remove((int) searchKey);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey != null;
     }
 
@@ -46,13 +46,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResumeInStorage(Resume resume, Object searchKey) {
-        storage.set((Integer) searchKey, resume);
+    protected void updateResumeInStorage(Resume resume, Integer searchKey) {
+        storage.set(searchKey, resume);
     }
 
     @Override
-    protected Resume getFromStorage(Object searchKey) {
-        return storage.get((Integer) searchKey);
+    protected Resume getFromStorage(Integer searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override

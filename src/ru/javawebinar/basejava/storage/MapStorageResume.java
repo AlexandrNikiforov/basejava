@@ -8,32 +8,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MapStorageResume extends AbstractStorage {
+public class MapStorageResume extends AbstractStorage<Resume> {
 
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public void updateResumeInStorage(Resume resume, Object searchKey) {
+    public void updateResumeInStorage(Resume resume, Resume searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    public void doSave(Resume resume, Object searchKey) {
+    public void doSave(Resume resume, Resume searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getFromStorage(Object searchKey) {
-        return (Resume) searchKey;
+    protected Resume getFromStorage(Resume searchKey) {
+        return searchKey;
     }
 
     @Override
-    public void doDelete(Object searchKey) {
-        storage.remove(((Resume) searchKey).getUuid());
+    public void doDelete(Resume searchKey) {
+        storage.remove((searchKey).getUuid());
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Resume searchKey) {
         return searchKey != null;
     }
 

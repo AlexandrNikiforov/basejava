@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
     protected static final String ERROR_TEXT_NO_SUCH_RESUME =
             "ERROR: the storage doesn't contain the resume with uuid: ";
@@ -20,39 +20,39 @@ public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_NAME_COMPARATOR =
             Comparator.comparing(Resume::getFullName);
 
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract SK getSearchKey(String uuid);
 
-    protected abstract void updateResumeInStorage(Resume resume, Object searchKey);
+    protected abstract void updateResumeInStorage(Resume resume, SK searchKey);
 
-    protected abstract void doSave(Resume resume, Object searchKey);
+    protected abstract void doSave(Resume resume, SK searchKey);
 
-    protected abstract void doDelete(Object searchKey);
+    protected abstract void doDelete(SK searchKey);
 
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
-    protected abstract Resume getFromStorage(Object searchKey);
+    protected abstract Resume getFromStorage(SK searchKey);
 
     protected abstract List<Resume> doCopy();
 
     @Override
     public void update(Resume resume) {
-        Object searchKey = getKeyIfResumeExists(resume.getUuid());
+        SK searchKey = getKeyIfResumeExists(resume.getUuid());
         updateResumeInStorage(resume, searchKey);
     }
 
     public void save(Resume resume) {
-        Object searchKey = getKeyIfResumeNotExists(resume);
+        SK searchKey = getKeyIfResumeNotExists(resume);
         doSave(resume, searchKey);
     }
 
     public void delete(String uuid) {
-        Object searchKey = getKeyIfResumeExists(uuid);
+        SK searchKey = getKeyIfResumeExists(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getKeyIfResumeExists(uuid);
+        SK searchKey = getKeyIfResumeExists(uuid);
         return getFromStorage(searchKey);
     }
 
@@ -63,16 +63,16 @@ public abstract class AbstractStorage implements Storage {
         return allResumes;
     }
 
-    private Object getKeyIfResumeExists(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private SK getKeyIfResumeExists(String uuid) {
+        SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
         return searchKey;
     }
 
-    private Object getKeyIfResumeNotExists(Resume resume) {
-        Object searchKey = getSearchKey(resume.getUuid());
+    private SK getKeyIfResumeNotExists(Resume resume) {
+        SK searchKey = getSearchKey(resume.getUuid());
         if (isExist(searchKey)) {
             throw new ExistStorageException(resume.getUuid(),
                     ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());

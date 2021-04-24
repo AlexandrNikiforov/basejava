@@ -8,33 +8,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage<String> {
 
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public void updateResumeInStorage(Resume resume, Object searchKey) {
-        storage.put((String) searchKey, resume);
+    public void updateResumeInStorage(Resume resume, String searchKey) {
+        storage.put(searchKey, resume);
     }
 
     @Override
-    public void doSave(Resume resume, Object searchKey) {
-        storage.put((String) searchKey, resume);
+    public void doSave(Resume resume, String searchKey) {
+        storage.put(searchKey, resume);
     }
 
     @Override
-    protected Resume getFromStorage(Object searchKey) {
+    protected Resume getFromStorage(String searchKey) {
         return storage.get(searchKey);
     }
 
     @Override
-    public void doDelete(Object searchKey) {
-        storage.remove((String) searchKey);
+    public void doDelete(String searchKey) {
+        storage.remove(searchKey);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return storage.containsKey((String) searchKey);
+    protected boolean isExist(String searchKey) {
+        return storage.containsKey(searchKey);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
