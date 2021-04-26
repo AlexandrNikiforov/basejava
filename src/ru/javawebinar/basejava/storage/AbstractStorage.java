@@ -7,9 +7,11 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
 
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     protected static final String ERROR_TEXT_NO_SUCH_RESUME =
             "ERROR: the storage doesn't contain the resume with uuid: ";
     protected static final String ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE = "ERROR: the storage already contains the " +
@@ -35,28 +37,33 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void update(Resume resume) {
+        LOG.info("Update " + resume);
         SK searchKey = getKeyIfResumeExists(resume.getUuid());
         updateResumeInStorage(resume, searchKey);
     }
 
     public void save(Resume resume) {
+        LOG.info("Save " + resume);
         SK searchKey = getKeyIfResumeNotExists(resume);
         doSave(resume, searchKey);
     }
 
     public void delete(String uuid) {
+        LOG.info("Delete " + uuid);
         SK searchKey = getKeyIfResumeExists(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("Get " + uuid);
         SK searchKey = getKeyIfResumeExists(uuid);
         return getFromStorage(searchKey);
     }
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("getAllSorted");
         List<Resume> allResumes = new ArrayList<>(doCopy());
         allResumes.sort(RESUME_NAME_COMPARATOR);
         return allResumes;
@@ -65,6 +72,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getKeyIfResumeExists(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
+            LOG.warning("ERROR_TEXT_NO_SUCH_RESUME" + uuid);
             throw new NotExistStorageException(uuid, ERROR_TEXT_NO_SUCH_RESUME + uuid);
         }
         return searchKey;
@@ -73,6 +81,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getKeyIfResumeNotExists(Resume resume) {
         SK searchKey = getSearchKey(resume.getUuid());
         if (isExist(searchKey)) {
+            LOG.warning(ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
             throw new ExistStorageException(resume.getUuid(),
                     ERROR_TEXT_RESUME_IS_ALREADY_IN_STORAGE + resume.getUuid());
         }
