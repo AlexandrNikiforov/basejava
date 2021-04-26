@@ -14,9 +14,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected abstract Integer getSearchKey(String uuid);
 
-    protected abstract void saveToStorage(Resume resume, int searchKey);
+    protected abstract void saveToStorage(Resume resume, int index);
 
-    protected abstract void deleteFromStorage(int numericSearchKey);
+    protected abstract void deleteFromStorage(int index);
 
     @Override
     public void clear() {
@@ -25,33 +25,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void doSave(Resume resume, Integer searchKey) {
-        validate(resume);
-        int numericSearchKey = searchKey;
-        saveToStorage(resume, numericSearchKey);
+    protected void doSave(Resume resume, Integer index) {
+        checkOverflow(resume);
+        saveToStorage(resume, index);
         size++;
     }
 
-    @Override
-    protected void updateResumeInStorage(Resume resume, Integer searchKey) {
-        storage[searchKey] = resume;
-    }
-
-    protected void validate(Resume resume) {
+    private void checkOverflow(Resume resume) {
         if (size == STORAGE_CAPACITY) {
             throw new StorageException(resume.getUuid(), ERROR_TEXT_STORAGE_OUT_OF_SPACE);
         }
     }
 
     @Override
-    protected Resume getFromStorage(Integer searchKey) {
-        return storage[searchKey];
+    protected void updateResumeInStorage(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    public void doDelete(Integer searchKey) {
-        int numericSearchKey = searchKey;
-        deleteFromStorage(numericSearchKey);
+    protected Resume getFromStorage(Integer index) {
+        return storage[index];
+    }
+
+    @Override
+    public void doDelete(Integer index) {
+        deleteFromStorage(index);
         storage[size - 1] = null;
         size--;
     }
@@ -62,8 +60,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean isExist(Integer searchKey) {
-        return searchKey >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     @Override

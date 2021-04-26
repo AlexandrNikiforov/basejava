@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class MapStorage extends AbstractStorage<String> {
 
@@ -40,13 +39,6 @@ public class MapStorage extends AbstractStorage<String> {
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        return storage.values().stream()
-                .sorted(RESUME_NAME_COMPARATOR)
-                .collect(Collectors.toList());
     }
 
     @Override
