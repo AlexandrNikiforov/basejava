@@ -54,13 +54,19 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     void saveShouldThrowWhenStorageOverflow() {
         for (int i = 3; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
             try {
-                Resume newResume = new Resume("Name" + i);
+                Resume newResume = Resume.builder()
+                        .withUuid("uuid2" + i)
+                        .withFullName("Name" + i)
+                        .build();
                 storage.save(newResume);
             } catch (StorageException e) {
                 fail("An exception was thrown before storage was overflowed");
             }
         }
-        Resume resume10001 = new Resume("Overflow");
+        Resume resume10001 = Resume.builder()
+                .withUuid("overflow")
+                .withFullName("Overflow")
+                .build();
         Executable executable = () -> storage.save(resume10001);
 
         assertThrows(StorageException.class, executable);
