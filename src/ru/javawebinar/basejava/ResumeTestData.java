@@ -1,7 +1,10 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.model.ExperienceDescription;
+import ru.javawebinar.basejava.model.ExperienceDescription2;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +15,11 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
 
-        List<String> achievementsContent = new ArrayList<>();
-        achievementsContent.addAll(Arrays.asList(
+        List<String> achievementsContent = new ArrayList<>(Arrays.asList(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                         "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). " +
                         "Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. " +
-                        "Более 1000 выпускников." ,
+                        "Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция " +
                         "с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.", "Налаживание процесса разработки " +
                         "и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. " +
@@ -33,6 +35,32 @@ public class ResumeTestData {
                         "Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."
         ));
 
+        List<ExperienceDescription> experience2 = new ArrayList<>(Arrays.asList(
+                ExperienceDescription2.builder()
+                        .withCompanyName("Java Online Projects")
+                .withCompanyWebSite("https://javaops.ru/")
+                .withStartDate(LocalDate.of(2013,10, 1))
+                .withEndDate(LocalDate.now())
+                .withPosition("Автор проекта")
+                .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
+                .build(),
+
+                ExperienceDescription2.builder()
+                        .withCompanyName("Wrike")
+                        .withCompanyWebSite("https://www.wrike.com/")
+                        .withStartDate(LocalDate.of(2014,10, 1))
+                        .withEndDate(LocalDate.of(2016,1,1))
+                        .withPosition("Старший разработчик (backend)")
+                        .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike " +
+                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
+                                "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
+                        .build()
+
+
+        ));
+
+
+
         Resume resume01 = Resume.builder()
 //                .withUuid("uuid01")
                 .withFullName("Григорий Кислин")
@@ -40,7 +68,7 @@ public class ResumeTestData {
                 .withPersonal("Аналитический склад ума, сильная логика, креативность, инициативность. " +
                         "Пурист кода и архитектуры.")
                 .withAchievements(achievementsContent)
-//                .withExperience()
+                .withExperience(experience2)
 //                .withEducation("")
                 .build();
 

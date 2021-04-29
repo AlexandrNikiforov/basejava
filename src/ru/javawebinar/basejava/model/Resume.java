@@ -69,9 +69,9 @@ public class Resume implements Comparable<Resume> {
             return this;
         }
 
-        public Builder withExperience(List<String> experienceValue) {
+        public Builder withExperience(List<ExperienceDescription> experienceValue) {
             Objects.requireNonNull(experienceValue, "Experience value must not be null");
-            this.sections.put(SectionType.EXPERIENCE, new BulletedListSection(experienceValue));
+            this.sections.put(SectionType.EXPERIENCE, new Experience(experienceValue));
             return this;
         }
 
