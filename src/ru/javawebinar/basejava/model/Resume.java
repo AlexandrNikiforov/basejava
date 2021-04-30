@@ -6,22 +6,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Initial resume class
- */
 public class Resume implements Comparable<Resume> {
 
-    // Unique identifier
+    private static final String LINE_SEPARATOR = System.lineSeparator();
     private final String uuid;
     private final String fullName;
-    private final Map<SectionType, Section> sections;
-    private static final String LINE_SEPARATOR = System.lineSeparator();
-
+    private final Map<SectionName, Section> sections;
+    private final Map<SectionName, String> contacts;
 
     private Resume(Builder builder) {
         this.uuid = builder.uuid == null ? UUID.randomUUID().toString() : builder.uuid;
         this.fullName = builder.fullName;
         this.sections = builder.sections;
+        this.contacts = builder.contacts;
     }
 
     public static Builder builder() {
@@ -31,7 +28,8 @@ public class Resume implements Comparable<Resume> {
     public static class Builder {
         private String uuid;
         private String fullName;
-        private final Map<SectionType, Section> sections = new LinkedHashMap<>();
+        private final Map<SectionName, Section> sections = new LinkedHashMap<>();
+        private final Map<SectionName, String> contacts = new LinkedHashMap<>();
 
         private Builder() {
         }
@@ -42,6 +40,48 @@ public class Resume implements Comparable<Resume> {
 
         public Builder withUuid(String uuid) {
             this.uuid = uuid;
+            return this;
+        }
+
+        public Builder withPhoneNumber(String phoneNumber) {
+            Objects.requireNonNull(phoneNumber, "Phone number must not be null");
+            this.contacts.put(ContactType.CONTACT_PHONE_NUMBER, phoneNumber);
+            return this;
+        }
+
+        public Builder withSkype(String skype) {
+            Objects.requireNonNull(skype, "Skype profile must not be null");
+            this.contacts.put(ContactType.SKYPE, skype);
+            return this;
+        }
+
+        public Builder withEmail(String email) {
+            Objects.requireNonNull(email, "Email must not be null");
+            this.contacts.put(ContactType.E_MAIL, email);
+            return this;
+        }
+
+        public Builder withLinkedIn(String linkedInProfile) {
+            Objects.requireNonNull(linkedInProfile, "LinkedIn profile must not be null");
+            this.contacts.put(ContactType.LINKED_IN_PROFILE, linkedInProfile);
+            return this;
+        }
+
+        public Builder withGitHubProfile(String gitHubProfile) {
+            Objects.requireNonNull(gitHubProfile, "GitHub profile must not be null");
+            this.contacts.put(ContactType.GITHUB_PROFILE, gitHubProfile);
+            return this;
+        }
+
+        public Builder withStackoverflow(String stackoverflowProfile) {
+            Objects.requireNonNull(stackoverflowProfile, "Stackoverflow profile must not be null");
+            this.contacts.put(ContactType.STACKOVERFLOW_PROFILE, stackoverflowProfile);
+            return this;
+        }
+
+        public Builder withHomePage(String homePage) {
+            Objects.requireNonNull(homePage, "Home page profile must not be null");
+            this.contacts.put(ContactType.HOME_PAGE, homePage);
             return this;
         }
 
@@ -69,19 +109,23 @@ public class Resume implements Comparable<Resume> {
             return this;
         }
 
+        public Builder withQualifications(List<String> achievementsValue) {
+            Objects.requireNonNull(achievementsValue, "Qualifications value must not be null");
+            this.sections.put(SectionType.QUALIFICATIONS, new BulletedListSection(achievementsValue));
+            return this;
+        }
+
         public Builder withExperience(List<ExperienceDescription> experienceValue) {
             Objects.requireNonNull(experienceValue, "Experience value must not be null");
             this.sections.put(SectionType.EXPERIENCE, new Experience(experienceValue));
             return this;
         }
 
-        public Builder withEducation(List<String> educationValue) {
+        public Builder withEducation(List<ExperienceDescription> educationValue) {
             Objects.requireNonNull(educationValue, "Education value must not be null");
-            this.sections.put(SectionType.EDUCATION, new BulletedListSection(educationValue));
+            this.sections.put(SectionType.EDUCATION, new Experience(educationValue));
             return this;
         }
-
-
     }
 
     public String getUuid() {
@@ -98,7 +142,15 @@ public class Resume implements Comparable<Resume> {
                 .append(fullName)
                 .append(LINE_SEPARATOR)
                 .append(LINE_SEPARATOR);
-        for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+
+        for (Map.Entry<SectionName, String> entry : contacts.entrySet()) {
+            content.append(entry.getKey().getTitle())
+                    .append(entry.getValue())
+                    .append(LINE_SEPARATOR);
+        }
+            content.append(LINE_SEPARATOR);
+
+        for (Map.Entry<SectionName, Section> entry : sections.entrySet()) {
             content.append(entry.getKey().getTitle())
                     .append(LINE_SEPARATOR)
                     .append(entry.getValue())

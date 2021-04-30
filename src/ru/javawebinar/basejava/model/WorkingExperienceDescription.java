@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class ExperienceDescription2 implements ExperienceDescription{
+public class WorkingExperienceDescription implements ExperienceDescription{
     private final String companyName;
     private final String companyWebSite;
     private final LocalDate startDate;
@@ -14,7 +14,7 @@ public class ExperienceDescription2 implements ExperienceDescription{
     private static final String DASH_CHARACTER = "-";
     private static final String LINE_SEPARATOR = System.lineSeparator();
 
-    private ExperienceDescription2(Builder builder) {
+    private WorkingExperienceDescription(Builder builder) {
         this.companyName = builder.companyName;
         this.companyWebSite = builder.companyWebSite;
         this.startDate = builder.startDate;
@@ -63,8 +63,8 @@ public class ExperienceDescription2 implements ExperienceDescription{
         private Builder() {
         }
 
-        public ExperienceDescription2 build() {
-            return new ExperienceDescription2(this);
+        public WorkingExperienceDescription build() {
+            return new WorkingExperienceDescription(this);
         }
 
         public Builder withCompanyName(String companyName) {
