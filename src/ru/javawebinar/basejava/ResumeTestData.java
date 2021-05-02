@@ -1,7 +1,7 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.ExperienceDescription;
-import ru.javawebinar.basejava.model.WorkingExperienceDescription;
+import ru.javawebinar.basejava.model.Experience;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.time.LocalDate;
@@ -60,7 +60,7 @@ public class ResumeTestData {
         ));
 
         List<ExperienceDescription> experience = new ArrayList<>(Arrays.asList(
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Java Online Projects")
                         .withCompanyWebSite("https://javaops.ru/")
                         .withStartDate(LocalDate.of(2013, 10, 1))
@@ -69,7 +69,7 @@ public class ResumeTestData {
                         .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Wrike")
                         .withCompanyWebSite("https://www.wrike.com/")
                         .withStartDate(LocalDate.of(2014, 10, 1))
@@ -80,7 +80,7 @@ public class ResumeTestData {
                                 "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("RIT Center")
                         .withCompanyWebSite("")
                         .withStartDate(LocalDate.of(2012, 4, 1))
@@ -97,7 +97,7 @@ public class ResumeTestData {
                                 "PL/Python")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Luxoft (Deutsche Bank)")
                         .withCompanyWebSite("https://luxoft.com")
                         .withStartDate(LocalDate.of(2010, 12, 1))
@@ -110,7 +110,7 @@ public class ResumeTestData {
                                 "ExtGWT (GXT), Highstock, Commet, HTML5.")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Yota")
                         .withCompanyWebSite("https://www.yota.ru/")
                         .withStartDate(LocalDate.of(2008, 6, 1))
@@ -124,7 +124,7 @@ public class ResumeTestData {
         ));
 
         List<ExperienceDescription> education = new ArrayList<>(Arrays.asList(
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Coursera")
                         .withCompanyWebSite("https://www.coursera.org/learn/progfun1")
                         .withStartDate(LocalDate.of(2013, 3, 1))
@@ -133,7 +133,7 @@ public class ResumeTestData {
                         .withDescription("\"Functional Programming Principles in Scala\" by Martin Odersky")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Luxoft")
                         .withCompanyWebSite("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366")
                         .withStartDate(LocalDate.of(2011, 3, 1))
@@ -142,7 +142,7 @@ public class ResumeTestData {
                         .withDescription("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
                         .build(),
 
-                WorkingExperienceDescription.builder()
+                Experience.builder()
                         .withCompanyName("Siemens AG")
                         .withCompanyWebSite("http://www.siemens.ru/")
                         .withStartDate(LocalDate.of(2005, 1, 1))

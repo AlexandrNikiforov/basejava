@@ -6,7 +6,6 @@ public class BulletedListSection implements Section {
     private final List<String> contentList;
     public static final char SPACE_CHARACTER = ' ';
     public static final char BULLET_POINT_SIGN = '\u2022';
-    private static final String LINE_SEPARATOR = System.lineSeparator();
 
     public BulletedListSection(List<String> contentList) {
         this.contentList = contentList;
@@ -14,12 +13,13 @@ public class BulletedListSection implements Section {
 
     @Override
     public String toString() {
+        String lineSeparator = System.lineSeparator();
         StringBuilder content = new StringBuilder();
         for (String line : contentList) {
             content.append(BULLET_POINT_SIGN)
                     .append(SPACE_CHARACTER)
                     .append(line)
-                    .append(LINE_SEPARATOR);
+                    .append(lineSeparator);
         }
         return content.toString();
     }
