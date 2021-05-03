@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ExperienceDescription;
 import ru.javawebinar.basejava.model.Experience;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -59,33 +58,30 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\""
         ));
 
-        List<ExperienceDescription> experience = new ArrayList<>(Arrays.asList(
+        List<Experience> experience = new ArrayList<>(Arrays.asList(
                 Experience.builder()
-                        .withCompanyName("Java Online Projects")
-                        .withCompanyWebSite("https://javaops.ru/")
+                        .homePage("Java Online Projects", "https://javaops.ru/")
                         .withStartDate(LocalDate.of(2013, 10, 1))
                         .withEndDate(LocalDate.now())
-                        .withPosition("Автор проекта")
+                        .withTitle("Автор проекта")
                         .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("Wrike")
-                        .withCompanyWebSite("https://www.wrike.com/")
+                        .homePage("Wrike", "https://www.wrike.com/")
                         .withStartDate(LocalDate.of(2014, 10, 1))
                         .withEndDate(LocalDate.of(2016, 1, 1))
-                        .withPosition("Старший разработчик (backend)")
+                        .withTitle("Старший разработчик (backend)")
                         .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike " +
                                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
                                 "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("RIT Center")
-                        .withCompanyWebSite("")
+                        .homePage("RIT Center", null)
                         .withStartDate(LocalDate.of(2012, 4, 1))
                         .withEndDate(LocalDate.of(2014, 10, 1))
-                        .withPosition("Java архитектор")
+                        .withTitle("Java архитектор")
                         .withDescription("Организация процесса разработки системы ERP для разных окружений: релизная " +
                                 "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), " +
                                 "конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной " +
@@ -98,11 +94,10 @@ public class ResumeTestData {
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("Luxoft (Deutsche Bank)")
-                        .withCompanyWebSite("https://luxoft.com")
+                        .homePage("Luxoft (Deutsche Bank)", "https://luxoft.com")
                         .withStartDate(LocalDate.of(2010, 12, 1))
                         .withEndDate(LocalDate.of(2012, 4, 1))
-                        .withPosition("Ведущий программист")
+                        .withTitle("Ведущий программист")
                         .withDescription("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, " +
                                 "Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной " +
                                 "части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа " +
@@ -111,11 +106,10 @@ public class ResumeTestData {
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("Yota")
-                        .withCompanyWebSite("https://www.yota.ru/")
+                        .homePage("Yota", "https://www.yota.ru/")
                         .withStartDate(LocalDate.of(2008, 6, 1))
                         .withEndDate(LocalDate.of(2012, 10, 1))
-                        .withPosition("Ведущий специалист")
+                        .withTitle("Ведущий специалист")
                         .withDescription("Дизайн и имплементация Java EE фреймворка для отдела " +
                                 "\"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, " +
                                 "JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга " +
@@ -123,32 +117,29 @@ public class ResumeTestData {
                         .build()
         ));
 
-        List<ExperienceDescription> education = new ArrayList<>(Arrays.asList(
+        List<Experience> education = new ArrayList<>(Arrays.asList(
                 Experience.builder()
-                        .withCompanyName("Coursera")
-                        .withCompanyWebSite("https://www.coursera.org/learn/progfun1")
+                        .homePage("Coursera", "https://www.coursera.org/learn/progfun1")
                         .withStartDate(LocalDate.of(2013, 3, 1))
                         .withEndDate(LocalDate.of(2013, 5, 1))
-                        .withPosition("")
-                        .withDescription("\"Functional Programming Principles in Scala\" by Martin Odersky")
+                        .withTitle("\"Functional Programming Principles in Scala\" by Martin Odersky")
+                        .withDescription(null)
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("Luxoft")
-                        .withCompanyWebSite("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366")
+                        .homePage("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366")
                         .withStartDate(LocalDate.of(2011, 3, 1))
                         .withEndDate(LocalDate.of(2011, 4, 1))
-                        .withPosition("")
-                        .withDescription("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
+                        .withTitle("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
+                        .withDescription(null)
                         .build(),
 
                 Experience.builder()
-                        .withCompanyName("Siemens AG")
-                        .withCompanyWebSite("http://www.siemens.ru/")
+                        .homePage("Siemens AG", "http://www.siemens.ru/")
                         .withStartDate(LocalDate.of(2005, 1, 1))
                         .withEndDate(LocalDate.of(2005, 4, 1))
-                        .withPosition("")
-                        .withDescription("3 месяца обучения мобильным IN сетям (Берлин)")
+                        .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
+                        .withDescription(null)
                         .build()
         ));
 

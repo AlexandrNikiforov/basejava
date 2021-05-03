@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.LinkedHashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
 
-    private static final String LINE_SEPARATOR = System.lineSeparator();
     private final String uuid;
     private final String fullName;
     private final Map<SectionName, Section> sections;
@@ -21,6 +20,14 @@ public class Resume implements Comparable<Resume> {
         this.contacts = builder.contacts;
     }
 
+    public String getContact (ContactName contactType) {
+        return contacts.get(contactType);
+    }
+
+    public Section getSection (SectionName type) {
+        return sections.get(type);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -28,8 +35,8 @@ public class Resume implements Comparable<Resume> {
     public static class Builder {
         private String uuid;
         private String fullName;
-        private final Map<SectionName, Section> sections = new LinkedHashMap<>();
-        private final Map<ContactName, String> contacts = new LinkedHashMap<>();
+        private final Map<SectionName, Section> sections = new EnumMap<>(SectionName.class);
+        private final Map<ContactName, String> contacts = new EnumMap<>(ContactName.class);
 
         private Builder() {
         }
@@ -115,13 +122,13 @@ public class Resume implements Comparable<Resume> {
             return this;
         }
 
-        public Builder withExperience(List<ExperienceDescription> experienceValue) {
+        public Builder withExperience(List<Experience> experienceValue) {
             Objects.requireNonNull(experienceValue, "Experience value must not be null");
             this.sections.put(SectionName.EXPERIENCE, new Organization(experienceValue));
             return this;
         }
 
-        public Builder withEducation(List<ExperienceDescription> educationValue) {
+        public Builder withEducation(List<Experience> educationValue) {
             Objects.requireNonNull(educationValue, "Education value must not be null");
             this.sections.put(SectionName.EDUCATION, new Organization(educationValue));
             return this;
@@ -138,24 +145,25 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public String toString() {
+        String lineSeparator = System.lineSeparator();
         StringBuilder content = new StringBuilder().append("Resume: ")
                 .append(fullName)
-                .append(LINE_SEPARATOR)
-                .append(LINE_SEPARATOR);
+                .append(lineSeparator)
+                .append(lineSeparator);
 
         for (Map.Entry<ContactName, String> entry : contacts.entrySet()) {
             content.append(entry.getKey().getTitle())
                     .append(entry.getValue())
-                    .append(LINE_SEPARATOR);
+                    .append(lineSeparator);
         }
-            content.append(LINE_SEPARATOR);
+            content.append(lineSeparator);
 
         for (Map.Entry<SectionName, Section> entry : sections.entrySet()) {
             content.append(entry.getKey().getTitle())
-                    .append(LINE_SEPARATOR)
+                    .append(lineSeparator)
                     .append(entry.getValue())
-                    .append(LINE_SEPARATOR)
-                    .append(LINE_SEPARATOR);
+                    .append(lineSeparator)
+                    .append(lineSeparator);
         }
         return content.toString();
     }
@@ -168,13 +176,17 @@ public class Resume implements Comparable<Resume> {
         Resume resume = (Resume) o;
 
         if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
-        return fullName != null ? fullName.equals(resume.fullName) : resume.fullName == null;
+        if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
+        if (sections != null ? !sections.equals(resume.sections) : resume.sections != null) return false;
+        return contacts != null ? contacts.equals(resume.contacts) : resume.contacts == null;
     }
 
     @Override
     public int hashCode() {
         int result = uuid != null ? uuid.hashCode() : 0;
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        result = 31 * result + (sections != null ? sections.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }
 

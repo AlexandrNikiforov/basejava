@@ -2,22 +2,45 @@ package ru.javawebinar.basejava.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-public class Experience implements ExperienceDescription{
-    private final String companyName;
-    private final String companyWebSite;
+public class Experience {
+    private final Link homePage;
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final String position;
+    private final String title;
     private final String description;
 
     private Experience(Builder builder) {
-        this.companyName = builder.companyName;
-        this.companyWebSite = builder.companyWebSite;
+        this.homePage = builder.homePage;
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
-        this.position = builder.position;
+        this.title = builder.title;
         this.description = builder.description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Experience that = (Experience) o;
+
+        if (!homePage.equals(that.homePage)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        if (!title.equals(that.title)) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = homePage.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
     public static Builder builder() {
@@ -27,12 +50,12 @@ public class Experience implements ExperienceDescription{
     @Override
     public String toString() {
         String lineSeparator = System.lineSeparator();
+        String lineSeparatorPlusDescription = description == null? "": System.lineSeparator() + description;
 
-        return companyName + lineSeparator +
-                companyWebSite + lineSeparator +
+        return homePage.toString() + lineSeparator +
                 formatDate(startDate) + " - " + formatDate(endDate) + lineSeparator +
-                position + lineSeparator +
-                description;
+                title +
+                lineSeparatorPlusDescription;
     }
 
     private String formatDate(LocalDate date) {
@@ -44,11 +67,10 @@ public class Experience implements ExperienceDescription{
     }
 
     public static class Builder {
-        private String companyName;
-        private String companyWebSite;
+        private Link homePage;
         private LocalDate startDate;
         private LocalDate endDate;
-        private String position;
+        private String title;
         private String description;
 
         private Builder() {
@@ -58,28 +80,26 @@ public class Experience implements ExperienceDescription{
             return new Experience(this);
         }
 
-        public Builder withCompanyName(String companyName) {
-            this.companyName = companyName;
-            return this;
-        }
-
-        public Builder withCompanyWebSite(String companyWebSite) {
-            this.companyWebSite = companyWebSite;
+        public Builder homePage(String companyName, String webSite) {
+            this.homePage = new Link (companyName, webSite);
             return this;
         }
 
         public Builder withStartDate(LocalDate startDate) {
+            Objects.requireNonNull(startDate, "Start date must not be null");
             this.startDate = startDate;
             return this;
         }
 
         public Builder withEndDate(LocalDate endDate) {
+            Objects.requireNonNull(endDate, "End date must not be null");
             this.endDate = endDate;
             return this;
         }
 
-        public Builder withPosition(String position) {
-            this.position = position;
+        public Builder withTitle (String title) {
+            Objects.requireNonNull(title, "Title must not be null");
+            this.title = title;
             return this;
         }
 

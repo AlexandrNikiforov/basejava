@@ -4,20 +4,38 @@ import java.util.List;
 
 public class BulletedListSection implements Section {
     private final List<String> contentList;
-    public static final char SPACE_CHARACTER = ' ';
-    public static final char BULLET_POINT_SIGN = '\u2022';
 
     public BulletedListSection(List<String> contentList) {
         this.contentList = contentList;
     }
 
+    public List<String> getContentList() {
+        return contentList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BulletedListSection that = (BulletedListSection) o;
+
+        return contentList.equals(that.contentList);
+    }
+
+    @Override
+    public int hashCode() {
+        return contentList.hashCode();
+    }
+
     @Override
     public String toString() {
+        char bulletPointSign = '\u2022';
         String lineSeparator = System.lineSeparator();
         StringBuilder content = new StringBuilder();
         for (String line : contentList) {
-            content.append(BULLET_POINT_SIGN)
-                    .append(SPACE_CHARACTER)
+            content.append(bulletPointSign)
+                    .append(" ")
                     .append(line)
                     .append(lineSeparator);
         }
