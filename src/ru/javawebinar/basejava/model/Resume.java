@@ -14,10 +14,50 @@ public class Resume implements Comparable<Resume> {
     private final Map<ContactName, String> contacts;
 
     private Resume(Builder builder) {
+        validate(builder);
         this.uuid = builder.uuid == null ? UUID.randomUUID().toString() : builder.uuid;
         this.fullName = builder.fullName;
         this.sections = builder.sections;
         this.contacts = builder.contacts;
+    }
+
+    private void validate(Builder builder) {
+        Objects.requireNonNull(builder.fullName, "Full name must not be null");
+        Objects.requireNonNull(builder.sections, "Sections must not be null");
+        validateByPredicate(builder.sections.isEmpty(), "Sections must not be empty");
+        validateByPredicate(builder.contacts.isEmpty(), "Contacts must not be empty");
+        validateByPredicate(builder.contacts.get(ContactName.CONTACT_PHONE_NUMBER) == null,
+                "Phone number must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.SKYPE) == null,
+                "Skype number must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.E_MAIL) == null,
+                "E-mail number must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.LINKED_IN_PROFILE) == null,
+                "LinkedIn profile must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.GITHUB_PROFILE) == null,
+                "Github profile must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.STACKOVERFLOW_PROFILE) == null,
+                "Stackoverflow must not be null");
+        validateByPredicate(builder.contacts.get(ContactName.HOME_PAGE) == null,
+                "Home page must not be null");
+        validateByPredicate(builder.sections.get(SectionName.OBJECTIVE) == null,
+                "Objective must not be null");
+        validateByPredicate(builder.sections.get(SectionName.PERSONAL) == null,
+                "Personal must not be null");
+        validateByPredicate(builder.sections.get(SectionName.ACHIEVEMENTS) == null,
+                "Achievements must not be null");
+        validateByPredicate(builder.sections.get(SectionName.QUALIFICATIONS) == null,
+                "Qualification must not be null");
+        validateByPredicate(builder.sections.get(SectionName.EXPERIENCE) == null,
+                "Experience must not be null");
+        validateByPredicate(builder.sections.get(SectionName.EDUCATION) == null,
+                "Education must not be null");
+    }
+
+    private void validateByPredicate (boolean condition, String exceptionMessage){
+        if (condition) {
+            throw new IllegalArgumentException(exceptionMessage);
+        }
     }
 
     public String getContact (ContactName contactType) {

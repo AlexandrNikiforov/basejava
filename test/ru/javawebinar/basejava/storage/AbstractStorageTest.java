@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -20,29 +21,16 @@ abstract class AbstractStorageTest {
     protected final Storage storage;
 
     protected static final String UUID_01 = "uuid01";
-    protected static final Resume RESUME_1 = Resume.builder()
-            .withUuid(UUID_01)
-            .withFullName("C Name 1")
-            .build();
+    protected static final Resume RESUME_1 = ResumeTestData.createResume(UUID_01, "C Name 1");
 
     protected static final String UUID_02 = "uuid02";
-    protected static final Resume RESUME_2 = Resume.builder()
-            .withUuid(UUID_02)
-            .withFullName("B Name 2")
-            .build();
+    protected static final Resume RESUME_2 = ResumeTestData.createResume(UUID_02, "B Name 2");
 
     protected static final String UUID_03 = "uuid03";
-    protected static final Resume RESUME_3 = Resume.builder()
-            .withUuid(UUID_03)
-            .withFullName("A Name 3")
-            .build();
-
+    protected static final Resume RESUME_3 = ResumeTestData.createResume(UUID_03, "A Name 3");
 
     protected static final String UUID_04 = "uuid04";
-    protected static final Resume NON_EXISTENT_RESUME = Resume.builder()
-            .withUuid(UUID_04)
-            .withFullName("Name 4")
-            .build();
+    protected static final Resume NON_EXISTENT_RESUME = ResumeTestData.createResume(UUID_04, "Name 4");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -71,10 +59,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = Resume.builder()
-                .withUuid(UUID_01)
-                .withFullName("New name")
-                .build();
+        Resume newResume = ResumeTestData.createResume(UUID_01, "New name");
 
         storage.update(newResume);
 
