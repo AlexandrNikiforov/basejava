@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -54,19 +55,13 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     void saveShouldThrowWhenStorageOverflow() {
         for (int i = 3; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
             try {
-                Resume newResume = Resume.builder()
-                        .withUuid("uuid2" + i)
-                        .withFullName("Name" + i)
-                        .build();
+                Resume newResume = ResumeTestData.createResume("uuid2" + i, "Name" + i );
                 storage.save(newResume);
             } catch (StorageException e) {
                 fail("An exception was thrown before storage was overflowed");
             }
         }
-        Resume resume10001 = Resume.builder()
-                .withUuid("overflow")
-                .withFullName("Overflow")
-                .build();
+        Resume resume10001 = ResumeTestData.createResume("overflow", "Overflow");
         Executable executable = () -> storage.save(resume10001);
 
         assertThrows(StorageException.class, executable);

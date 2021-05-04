@@ -1,11 +1,14 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.model.ContactName;
 import ru.javawebinar.basejava.model.Experience;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionName;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
@@ -76,7 +79,7 @@ public class ResumeTestData {
                                             .withStartDate(LocalDate.of(2014, 10, 1))
                                             .withEndDate(LocalDate.of(2016, 1, 1))
                                             .withTitle("Старший разработчик (backend)")
-                                            .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike"+
+                                            .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike" +
                                                     "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
                                                     "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
                                             .build()
@@ -217,6 +220,8 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume resume01 = Resume.builder()
+                .withContactsImplementation(new EnumMap<>(ContactName.class))
+                .withSectionsImplementation(new EnumMap<>(SectionName.class))
 //                .withUuid("uuid01")
                 .withFullName("Григорий Кислин")
                 .withPhoneNumber(PHONE_NUMBER)
@@ -237,8 +242,10 @@ public class ResumeTestData {
         System.out.println(resume01);
     }
 
-    public static Resume createResume (String uuid, String fullName) {
+    public static Resume createResume(String uuid, String fullName) {
         return Resume.builder()
+                .withContactsImplementation(new EnumMap<>(ContactName.class))
+                .withSectionsImplementation(new EnumMap<>(SectionName.class))
                 .withUuid(uuid)
                 .withFullName(fullName)
                 .withPhoneNumber(PHONE_NUMBER)

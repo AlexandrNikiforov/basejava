@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,17 +53,17 @@ public class Resume implements Comparable<Resume> {
                 "Education must not be null");
     }
 
-    private void validateByPredicate (boolean condition, String exceptionMessage){
+    private void validateByPredicate(boolean condition, String exceptionMessage) {
         if (condition) {
             throw new IllegalArgumentException(exceptionMessage);
         }
     }
 
-    public String getContact (ContactName contactType) {
+    public String getContact(ContactName contactType) {
         return contacts.get(contactType);
     }
 
-    public Section getSection (SectionName type) {
+    public Section getSection(SectionName type) {
         return sections.get(type);
     }
 
@@ -75,8 +74,8 @@ public class Resume implements Comparable<Resume> {
     public static class Builder {
         private String uuid;
         private String fullName;
-        private final Map<SectionName, Section> sections = new EnumMap<>(SectionName.class);
-        private final Map<ContactName, String> contacts = new EnumMap<>(ContactName.class);
+        private Map<SectionName, Section> sections;
+        private Map<ContactName, String> contacts;
 
         private Builder() {
         }
@@ -84,6 +83,17 @@ public class Resume implements Comparable<Resume> {
         public Resume build() {
             return new Resume(this);
         }
+
+        public Builder withSectionsImplementation(Map<SectionName, Section> sections) {
+            this.sections = sections;
+            return this;
+        }
+
+        public Builder withContactsImplementation(Map<ContactName, String> contacts) {
+            this.contacts = contacts;
+            return this;
+        }
+
 
         public Builder withUuid(String uuid) {
             this.uuid = uuid;
@@ -196,7 +206,7 @@ public class Resume implements Comparable<Resume> {
                     .append(entry.getValue())
                     .append(lineSeparator);
         }
-            content.append(lineSeparator);
+        content.append(lineSeparator);
 
         for (Map.Entry<SectionName, Section> entry : sections.entrySet()) {
             content.append(entry.getKey().getTitle())
