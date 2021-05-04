@@ -36,15 +36,14 @@ public class MainFile {
     }
 
 
-    //это выводило все файлы, но не сортировало по директориям
     private static void printAllFilesNames(File dir) {
         String offset = "";
         printAllFilesNames0(dir, offset);
     }
 
     private static void printAllFilesNames0(File dir, String offset) {
-        File[] files = sortFiles(dir);
-//        File[] files = dir.listFiles();
+//        File[] files = sortFiles(dir);
+        File[] files = dir.listFiles();
 
         if (files != null) {
             for (File file : files) {

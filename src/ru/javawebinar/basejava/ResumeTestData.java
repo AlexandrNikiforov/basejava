@@ -58,88 +58,153 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\""
         ));
 
+
         List<Experience> experience = new ArrayList<>(Arrays.asList(
                 Experience.builder()
                         .homePage("Java Online Projects", "https://javaops.ru/")
-                        .withStartDate(LocalDate.of(2013, 10, 1))
-                        .withEndDate(LocalDate.now())
-                        .withTitle("Автор проекта")
-                        .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
+                        .withExperience(new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(2013, 10, 1))
+                                                .withEndDate(LocalDate.now())
+                                                .withTitle("Автор проекта")
+                                                .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
+                                                .build()
+                                )))
                         .build(),
 
                 Experience.builder()
                         .homePage("Wrike", "https://www.wrike.com/")
-                        .withStartDate(LocalDate.of(2014, 10, 1))
-                        .withEndDate(LocalDate.of(2016, 1, 1))
-                        .withTitle("Старший разработчик (backend)")
-                        .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike " +
-                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
-                                "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(2014, 10, 1))
+                                                .withEndDate(LocalDate.of(2016, 1, 1))
+                                                .withTitle("Старший разработчик (backend)")
+                                                .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike"+
+                                                        "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
+                                                        "аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
+                                                .build()
+                                )))
                         .build(),
 
                 Experience.builder()
                         .homePage("RIT Center", null)
-                        .withStartDate(LocalDate.of(2012, 4, 1))
-                        .withEndDate(LocalDate.of(2014, 10, 1))
-                        .withTitle("Java архитектор")
-                        .withDescription("Организация процесса разработки системы ERP для разных окружений: релизная " +
-                                "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), " +
-                                "конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной " +
-                                "части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), " +
-                                "сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco " +
-                                "JLAN для online редактирование из браузера документов MS Office. Maven + plugin " +
-                                "development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
-                                "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, " +
-                                "PL/Python")
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(2012, 4, 1))
+                                                .withEndDate(LocalDate.of(2014, 10, 1))
+                                                .withTitle("Java архитектор")
+                                                .withDescription("Организация процесса разработки системы ERP для разных окружений: релизная " +
+                                                        "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), " +
+                                                        "конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной " +
+                                                        "части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), " +
+                                                        "сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco " +
+                                                        "JLAN для online редактирование из браузера документов MS Office. Maven + plugin " +
+                                                        "development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
+                                                        "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, " +
+                                                        "PL/Python")
+                                                .build()
+                                )))
                         .build(),
 
                 Experience.builder()
                         .homePage("Luxoft (Deutsche Bank)", "https://luxoft.com")
-                        .withStartDate(LocalDate.of(2010, 12, 1))
-                        .withEndDate(LocalDate.of(2012, 4, 1))
-                        .withTitle("Ведущий программист")
-                        .withDescription("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, " +
-                                "Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной " +
-                                "части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа " +
-                                "результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, " +
-                                "ExtGWT (GXT), Highstock, Commet, HTML5.")
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+
+
+                                                .withStartDate(LocalDate.of(2010, 12, 1))
+                                                .withEndDate(LocalDate.of(2012, 4, 1))
+                                                .withTitle("Ведущий программист")
+                                                .withDescription("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, " +
+                                                        "Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной " +
+                                                        "части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа " +
+                                                        "результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, " +
+                                                        "ExtGWT (GXT), Highstock, Commet, HTML5.")
+                                                .build()))
+                        )
                         .build(),
 
                 Experience.builder()
                         .homePage("Yota", "https://www.yota.ru/")
-                        .withStartDate(LocalDate.of(2008, 6, 1))
-                        .withEndDate(LocalDate.of(2012, 10, 1))
-                        .withTitle("Ведущий специалист")
-                        .withDescription("Дизайн и имплементация Java EE фреймворка для отдела " +
-                                "\"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, " +
-                                "JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга " +
-                                "фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)")
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+
+                                                .withStartDate(LocalDate.of(2008, 6, 1))
+                                                .withEndDate(LocalDate.of(2012, 10, 1))
+                                                .withTitle("Ведущий специалист")
+                                                .withDescription("Дизайн и имплементация Java EE фреймворка для отдела " +
+                                                        "\"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, " +
+                                                        "JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга " +
+                                                        "фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)")
+                                                .build()
+                                )))
                         .build()
         ));
 
         List<Experience> education = new ArrayList<>(Arrays.asList(
                 Experience.builder()
                         .homePage("Coursera", "https://www.coursera.org/learn/progfun1")
-                        .withStartDate(LocalDate.of(2013, 3, 1))
-                        .withEndDate(LocalDate.of(2013, 5, 1))
-                        .withTitle("\"Functional Programming Principles in Scala\" by Martin Odersky")
-                        .withDescription(null)
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+
+                                                .withStartDate(LocalDate.of(2013, 3, 1))
+                                                .withEndDate(LocalDate.of(2013, 5, 1))
+                                                .withTitle("\"Functional Programming Principles in Scala\" by Martin Odersky")
+                                                .withDescription(null).build()
+                                )))
                         .build(),
 
                 Experience.builder()
                         .homePage("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366")
-                        .withStartDate(LocalDate.of(2011, 3, 1))
-                        .withEndDate(LocalDate.of(2011, 4, 1))
-                        .withTitle("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
-                        .withDescription(null)
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(2011, 3, 1))
+                                                .withEndDate(LocalDate.of(2011, 4, 1))
+                                                .withTitle("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
+                                                .withDescription(null)
+                                                .build()
+                                )))
                         .build(),
 
                 Experience.builder()
                         .homePage("Siemens AG", "http://www.siemens.ru/")
-                        .withStartDate(LocalDate.of(2005, 1, 1))
-                        .withEndDate(LocalDate.of(2005, 4, 1))
-                        .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
-                        .withDescription(null)
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(2005, 1, 1))
+                                                .withEndDate(LocalDate.of(2005, 4, 1))
+                                                .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
+                                                .withDescription(null)
+                                                .build()
+                                )))
+                        .build(),
+
+                Experience.builder()
+                        .homePage("Санкт-Петербургский национальный исследовательский университет " +
+                                "информационных технологий, механики и оптики", "http://www.ifmo.ru/")
+                        .withExperience(
+                                new ArrayList<>(Arrays.asList(
+
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(1993, 9, 1))
+                                                .withEndDate(LocalDate.of(1996, 7, 1))
+                                                .withTitle("Аспирантура (программист С, С++)")
+                                                .withDescription(null)
+                                                .build(),
+
+                                        Experience.ExperienceItem.experienceItemBuilder()
+                                                .withStartDate(LocalDate.of(1987, 7, 1))
+                                                .withEndDate(LocalDate.of(1993, 7, 1))
+                                                .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
+                                                .withDescription(null)
+                                                .build()
+                                )))
                         .build()
         ));
 
