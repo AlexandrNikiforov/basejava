@@ -79,10 +79,7 @@ abstract class AbstractStorageTest {
     }
 
     protected void assertResumeEqualsWhenSaved() {
-        Resume expectedResume = Resume.builder()
-                .withUuid(UUID_04)
-                .withFullName("Name 4")
-                .build();
+        Resume expectedResume = ResumeTestData.createResume(UUID_04, "Name 4");
 
         storage.save(NON_EXISTENT_RESUME);
         Resume actualResume = storage.get(expectedResume.getUuid());
