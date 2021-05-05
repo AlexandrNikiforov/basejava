@@ -1,12 +1,21 @@
 package ru.javawebinar.basejava.model;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
-public class Organization implements Section {
-    private final List<Experience> experience;
+import static ru.javawebinar.basejava.util.DateUtil.of;
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
-    public Organization(List<Experience> experience) {
-        this.experience = experience;
+public class Organization {
+    private final Link homePage;
+    private final List<Position> positions;
+
+    private Organization(Builder builder) {
+        this.homePage = builder.homePage;
+        this.positions = builder.experienceItems;
     }
 
     @Override
@@ -16,23 +25,160 @@ public class Organization implements Section {
 
         Organization that = (Organization) o;
 
-        return experience != null ? experience.equals(that.experience) : that.experience == null;
+        if (homePage != null ? !homePage.equals(that.homePage) : that.homePage != null) return false;
+        return positions != null ? positions.equals(that.positions) : that.positions == null;
     }
 
     @Override
     public int hashCode() {
-        return experience != null ? experience.hashCode() : 0;
+        int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + (positions != null ? positions.hashCode() : 0);
+        return result;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
     public String toString() {
         String lineSeparator = System.lineSeparator();
-        StringBuilder content = new StringBuilder();
-        for (Experience anExperience : experience) {
-            content.append(anExperience)
-                    .append(lineSeparator)
-                    .append(lineSeparator);
+
+        StringBuilder sb = new StringBuilder()
+                .append(homePage.toString())
+                .append(lineSeparator);
+
+        for (Position experienceItem : positions) {
+            sb.append(experienceItem);
+            sb.append(lineSeparator);
         }
-        return content.toString();
+
+        return sb.toString();
+    }
+
+    public static class Builder {
+        private Link homePage;
+        private List<Position> experienceItems;
+
+        private Builder() {
+        }
+
+        public Organization build() {
+            return new Organization(this);
+        }
+
+        public Builder homePage(String companyName, String webSite) {
+            this.homePage = new Link(companyName, webSite);
+            return this;
+        }
+
+        public Builder withExperience(List<Position> experienceItems) {
+            Objects.requireNonNull(experienceItems, "Experience must not be null");
+            this.experienceItems = experienceItems;
+            return this;
+        }
+    }
+
+    public static class Position {
+        private final LocalDate startDate;
+        private final LocalDate endDate;
+        private final String title;
+        private final String description;
+
+        public Position(PositionBuilder builder) {
+            this.startDate = builder.startDate;
+            this.endDate = builder.endDate;
+            this.title = builder.title;
+            this.description = builder.description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Position that = (Position) o;
+
+            if (!startDate.equals(that.startDate)) return false;
+            if (!endDate.equals(that.endDate)) return false;
+            if (!title.equals(that.title)) return false;
+            return description != null ? description.equals(that.description) : that.description == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = startDate.hashCode();
+            result = 31 * result + endDate.hashCode();
+            result = 31 * result + title.hashCode();
+            result = 31 * result + (description != null ? description.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+
+            String lineSeparator = System.lineSeparator();
+            String lineSeparatorPlusDescription = description == null ? "" : System.lineSeparator() + description;
+
+            return formatDate(startDate) + " - " + formatDate(endDate) + lineSeparator +
+                    title +
+                    lineSeparatorPlusDescription;
+        }
+
+        private String formatDate(LocalDate date) {
+            if (date.equals(NOW)) {
+                return "now";
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.yyyy");
+            return date.format(formatter);
+        }
+
+        public static PositionBuilder experienceItemBuilder() {
+            return new PositionBuilder();
+        }
+    }
+
+    public static class PositionBuilder {
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private String title;
+        private String description;
+
+        private PositionBuilder() {
+        }
+
+        public Position build() {
+            return new Position(this);
+        }
+
+        public PositionBuilder withStartDate(int startYear, Month startMonth) {
+            Objects.requireNonNull(startYear, "Start year must not be null");
+            Objects.requireNonNull(startMonth, "Start month must not be null");
+            this.startDate = of(startYear, startMonth);
+            return this;
+        }
+
+        public PositionBuilder withEndDate(int endYear, Month endMonth) {
+            Objects.requireNonNull(endYear, "End year must not be null");
+            Objects.requireNonNull(endMonth, "End month must not be null");
+            this.endDate = of(endYear, endMonth);
+            return this;
+        }
+
+        public PositionBuilder withoutEndDate() {
+            this.endDate = NOW;
+            return this;
+        }
+
+        public PositionBuilder withTitle(String title) {
+            Objects.requireNonNull(title, "Title must not be null");
+            this.title = title;
+            return this;
+        }
+
+        public PositionBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
     }
 }

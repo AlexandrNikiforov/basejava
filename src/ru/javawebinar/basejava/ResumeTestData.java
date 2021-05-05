@@ -1,11 +1,11 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.ContactName;
-import ru.javawebinar.basejava.model.Experience;
+import ru.javawebinar.basejava.model.Organization;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.model.SectionName;
 
-import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -58,26 +58,26 @@ public class ResumeTestData {
             "Родной русский, английский \"upper intermediate\""
     ));
 
-    private static final List<Experience> EXPERIENCE_CONTENT = new ArrayList<>(Arrays.asList(
-            Experience.builder()
+    private static final List<Organization> EXPERIENCE_CONTENT = new ArrayList<>(Arrays.asList(
+            Organization.builder()
                     .homePage("Java Online Projects", "https://javaops.ru/")
                     .withExperience(new ArrayList<>(Arrays.asList(
-                            Experience.ExperienceItem.experienceItemBuilder()
-                                    .withStartDate(LocalDate.of(2013, 10, 1))
-                                    .withEndDate(LocalDate.now())
+                            Organization.Position.experienceItemBuilder()
+                                    .withStartDate(2013, Month.OCTOBER)
+                                    .withoutEndDate()
                                     .withTitle("Автор проекта")
                                     .withDescription("Создание, организация и проведение Java онлайн проектов и стажировок.")
                                     .build()
                     )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Wrike", "https://www.wrike.com/")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(2014, 10, 1))
-                                            .withEndDate(LocalDate.of(2016, 1, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(2014, Month.OCTOBER)
+                                            .withEndDate(2016, Month.JANUARY)
                                             .withTitle("Старший разработчик (backend)")
                                             .withDescription("Проектирование и разработка онлайн платформы управления проектами Wrike" +
                                                     "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная " +
@@ -86,13 +86,13 @@ public class ResumeTestData {
                             )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("RIT Center", null)
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(2012, 4, 1))
-                                            .withEndDate(LocalDate.of(2014, 10, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(2012, Month.APRIL)
+                                            .withEndDate(2014, Month.OCTOBER)
                                             .withTitle("Java архитектор")
                                             .withDescription("Организация процесса разработки системы ERP для разных окружений: релизная " +
                                                     "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), " +
@@ -107,15 +107,15 @@ public class ResumeTestData {
                             )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Luxoft (Deutsche Bank)", "https://luxoft.com")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
+                                    Organization.Position.experienceItemBuilder()
 
 
-                                            .withStartDate(LocalDate.of(2010, 12, 1))
-                                            .withEndDate(LocalDate.of(2012, 4, 1))
+                                            .withStartDate(2010, Month.DECEMBER)
+                                            .withEndDate(2012, Month.APRIL)
                                             .withTitle("Ведущий программист")
                                             .withDescription("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, " +
                                                     "Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной " +
@@ -126,14 +126,14 @@ public class ResumeTestData {
                     )
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Yota", "https://www.yota.ru/")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
+                                    Organization.Position.experienceItemBuilder()
 
-                                            .withStartDate(LocalDate.of(2008, 6, 1))
-                                            .withEndDate(LocalDate.of(2012, 10, 1))
+                                            .withStartDate(2008, Month.JUNE)
+                                            .withEndDate(2012, Month.OCTOBER)
                                             .withTitle("Ведущий специалист")
                                             .withDescription("Дизайн и имплементация Java EE фреймворка для отдела " +
                                                     "\"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, " +
@@ -144,62 +144,62 @@ public class ResumeTestData {
                     .build()
     ));
 
-    private static final List<Experience> EDUCATION_CONTENT = new ArrayList<>(Arrays.asList(
-            Experience.builder()
+    private static final List<Organization> EDUCATION_CONTENT = new ArrayList<>(Arrays.asList(
+            Organization.builder()
                     .homePage("Coursera", "https://www.coursera.org/learn/progfun1")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
+                                    Organization.Position.experienceItemBuilder()
 
-                                            .withStartDate(LocalDate.of(2013, 3, 1))
-                                            .withEndDate(LocalDate.of(2013, 5, 1))
+                                            .withStartDate(2013, Month.MARCH)
+                                            .withEndDate(2013, Month.MAY)
                                             .withTitle("\"Functional Programming Principles in Scala\" by Martin Odersky")
                                             .withDescription(null).build()
                             )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(2011, 3, 1))
-                                            .withEndDate(LocalDate.of(2011, 4, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(2011, Month.MARCH)
+                                            .withEndDate(2011, Month.APRIL)
                                             .withTitle("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
                                             .withDescription(null)
                                             .build()
                             )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Siemens AG", "http://www.siemens.ru/")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(2005, 1, 1))
-                                            .withEndDate(LocalDate.of(2005, 4, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(2005, Month.JANUARY)
+                                            .withEndDate(2005, Month.APRIL)
                                             .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
                                             .withDescription(null)
                                             .build()
                             )))
                     .build(),
 
-            Experience.builder()
+            Organization.builder()
                     .homePage("Санкт-Петербургский национальный исследовательский университет " +
                             "информационных технологий, механики и оптики", "http://www.ifmo.ru/")
                     .withExperience(
                             new ArrayList<>(Arrays.asList(
 
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(1993, 9, 1))
-                                            .withEndDate(LocalDate.of(1996, 7, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(1993, Month.SEPTEMBER)
+                                            .withEndDate(1996, Month.JULY)
                                             .withTitle("Аспирантура (программист С, С++)")
                                             .withDescription(null)
                                             .build(),
 
-                                    Experience.ExperienceItem.experienceItemBuilder()
-                                            .withStartDate(LocalDate.of(1987, 7, 1))
-                                            .withEndDate(LocalDate.of(1993, 7, 1))
+                                    Organization.Position.experienceItemBuilder()
+                                            .withStartDate(1987, Month.JULY)
+                                            .withEndDate(1993, Month.JULY)
                                             .withTitle("3 месяца обучения мобильным IN сетям (Берлин)")
                                             .withDescription(null)
                                             .build()

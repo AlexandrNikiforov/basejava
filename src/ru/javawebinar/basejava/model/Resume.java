@@ -143,15 +143,15 @@ public class Resume implements Comparable<Resume> {
             return this;
         }
 
-        public Builder withExperience(List<Experience> experienceValue) {
+        public Builder withExperience(List<Organization> experienceValue) {
             Objects.requireNonNull(experienceValue, "Experience value must not be null");
-            this.sections.put(SectionName.EXPERIENCE, new Organization(experienceValue));
+            this.sections.put(SectionName.EXPERIENCE, new OrganizationSection(experienceValue));
             return this;
         }
 
-        public Builder withEducation(List<Experience> educationValue) {
+        public Builder withEducation(List<Organization> educationValue) {
             Objects.requireNonNull(educationValue, "Education value must not be null");
-            this.sections.put(SectionName.EDUCATION, new Organization(educationValue));
+            this.sections.put(SectionName.EDUCATION, new OrganizationSection(educationValue));
             return this;
         }
     }
