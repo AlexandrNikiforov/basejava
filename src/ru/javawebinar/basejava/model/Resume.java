@@ -1,11 +1,12 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
 
     private final String uuid;
     private final String fullName;
@@ -24,12 +25,6 @@ public class Resume implements Comparable<Resume> {
         Objects.requireNonNull(builder.fullName, "Full name must not be null");
     }
 
-    private void validateByPredicate(boolean condition, String exceptionMessage) {
-        if (condition) {
-            throw new IllegalArgumentException(exceptionMessage);
-        }
-    }
-
     public String getContact(ContactName contactType) {
         return contacts.get(contactType);
     }
@@ -38,11 +33,20 @@ public class Resume implements Comparable<Resume> {
         return sections.get(type);
     }
 
+    public void addContact (ContactName type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void addSection (ContactName type, String value) {
+        contacts.put(type, value);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
+        private static final long serialVersionUID = 1L;
         private String uuid;
         private String fullName;
         private Map<SectionName, Section> sections;
@@ -136,6 +140,12 @@ public class Resume implements Comparable<Resume> {
             this.sections.put(SectionName.ACHIEVEMENTS, new BulletedListSection(achievementsValue));
             return this;
         }
+//
+//        public Builder withAchievements(String... achievementsValue) {
+//            Objects.requireNonNull(achievementsValue, "Achievements value must not be null");
+//            this.sections.put(SectionName.ACHIEVEMENTS, new BulletedListSection(achievementsValue));
+//            return this;
+//        }
 
         public Builder withQualifications(List<String> achievementsValue) {
             Objects.requireNonNull(achievementsValue, "Qualifications value must not be null");

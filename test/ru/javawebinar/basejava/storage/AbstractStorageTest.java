@@ -8,18 +8,16 @@ import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
 
     protected final Storage storage;
-
+    protected static final File STORAGE_DIR = new File("/home/nikiforov-java/workspace/javaops/basejava/storage");
     protected static final String UUID_01 = "uuid01";
     protected static final Resume RESUME_1 = ResumeTestData.createResume(UUID_01, "C Name 1");
 
@@ -63,7 +61,7 @@ abstract class AbstractStorageTest {
 
         storage.update(newResume);
 
-        assertSame(newResume, storage.get(UUID_01));
+        assertEquals(newResume, storage.get(UUID_01));
     }
 
     @Test

@@ -1,12 +1,21 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-public class BulletedListSection implements Section {
+public class BulletedListSection implements Section, Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<String> contentList;
 
     public BulletedListSection(List<String> contentList) {
+        Objects.requireNonNull(contentList, "items must not be null");
         this.contentList = contentList;
+    }
+
+    public BulletedListSection(String... content) {
+        this(Arrays.asList(content));
     }
 
     public List<String> getContentList() {

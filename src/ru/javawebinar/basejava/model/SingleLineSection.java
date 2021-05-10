@@ -1,6 +1,9 @@
 package ru.javawebinar.basejava.model;
 
-public class SingleLineSection implements Section {
+import java.io.Serializable;
+
+public class SingleLineSection implements Section, Serializable {
+    private static final long serialVersionUID = 1L;
     private final String content;
 
     public SingleLineSection(String content) {
