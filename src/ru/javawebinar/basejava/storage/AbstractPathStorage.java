@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -86,44 +85,33 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected List<Resume> doCopy() {
         List<Resume> resumeList = new ArrayList<>();
 
-        try(Stream stream = Files.list(directory)) {
-            stream
-                    .filter(file -> !Files.isDirectory(file))
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .collect(Collectors.toList(Resume::new));
+        try {
+            List<Path> files = Files.list(directory).collect(Collectors.toList());
+            for (Path path : files) {
+                Resume resume = doRead(new BufferedInputStream(new FileInputStream(String.valueOf(path))));
+                    resumeList.add(resume);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-        Path[] paths = Files.list(directory).toArray();
-        if (paths == null) {
-            throw new StorageException("Directory read error", null);
-        }
-        for (Path Path : paths) {
-            resumeList.add(getFromStorage(Path));
+            throw new StorageException(null, "Cannot copy resume", e);
         }
         return resumeList;
     }
 
     @Override
     public void clear() {
-        Path[] Paths = directory.listPaths();
-        if (Paths != null) {
-            for (Path Path : Paths) {
-                doDelete(Path);
-            }
+        try {
+            Files.list(directory).forEach(this::doDelete);
+        } catch (IOException e) {
+            throw new StorageException(null, "Path delete error", e);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory read error", null);
+        try {
+            return Files.list(directory).collect(Collectors.toList()).size();
+        } catch (IOException e) {
+            throw new StorageException(null, "Couldn't read files");
         }
-        return list.length;
     }
 }
