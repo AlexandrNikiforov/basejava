@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public class ObjectStreamPathStorage extends AbstractPathStorage {
+public class ObjectStreamPathStorage extends AbstractPathStorage implements SerializationTechnology {
 
     public ObjectStreamPathStorage(String directory) {
         super(directory);
