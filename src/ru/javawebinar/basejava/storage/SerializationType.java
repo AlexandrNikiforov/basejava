@@ -6,12 +6,12 @@ public enum SerializationType {
     FILE {
         public SerializationTechnology getSerializer(String directory) {
             File file = new File(directory);
-            return new ObjectStreamStorage (file);
+            return new FileStorage (file);
         }
     },
     PATH {
         public SerializationTechnology getSerializer(String directory) {
-            return new ObjectStreamPathStorage(directory);
+            return new PathStorage(directory);
         }
     };
 

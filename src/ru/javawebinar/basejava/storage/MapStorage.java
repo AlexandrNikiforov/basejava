@@ -12,7 +12,7 @@ public class MapStorage extends AbstractStorage<String> {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public void updateResumeInStorage(Resume resume, String searchKey) {
+    public void doUpdate(Resume resume, String searchKey) {
         storage.put(searchKey, resume);
     }
 
@@ -22,7 +22,7 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected Resume getFromStorage(String searchKey) {
+    protected Resume doGet(String searchKey) {
         return storage.get(searchKey);
     }
 

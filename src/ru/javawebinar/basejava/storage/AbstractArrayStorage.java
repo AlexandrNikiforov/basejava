@@ -38,12 +38,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void updateResumeInStorage(Resume resume, Integer index) {
+    protected void doUpdate(Resume resume, Integer index) {
         storage[index] = resume;
     }
 
     @Override
-    protected Resume getFromStorage(Integer index) {
+    protected Resume doGet(Integer index) {
         return storage[index];
     }
 
