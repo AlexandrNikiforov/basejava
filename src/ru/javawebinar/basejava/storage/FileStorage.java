@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.serializer.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,15 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FileStorage extends AbstractStorage<File> implements SerializationTechnology, ObjectStream {
+public class FileStorage extends AbstractStorage<File> {
     private final File directory;
+    private final StreamSerializer streamSerializer;
 
-    public FileStorage(File directory) {
+    public FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "Directory must not be null");
+        Objects.requireNonNull(streamSerializer, "Stream serializer must not be null");
+
         validateByPredicate(!directory.isDirectory(), directory.getAbsolutePath() + " is not directory");
         validateByPredicate(!directory.canRead() || !directory.canWrite(),
                 directory.getAbsolutePath() + " is not readable/writable");
         this.directory = directory;
+        this.streamSerializer = streamSerializer;
     }
 
     private void validateByPredicate(boolean predicate, String message) {
@@ -114,13 +119,11 @@ public class FileStorage extends AbstractStorage<File> implements SerializationT
         return list.length;
     }
 
-    @Override
     public Resume doRead(InputStream is) throws IOException {
-        return ObjectStream.super.doRead(is);
+        return streamSerializer.doRead(is);
     }
 
-    @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
-        ObjectStream.super.doWrite(resume, os);
+        streamSerializer.doWrite(resume, os);
     }
 }

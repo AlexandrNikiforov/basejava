@@ -1,17 +1,25 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
 
-    private final String uuid;
-    private final String fullName;
-    private final Map<SectionName, Section> sections;
-    private final Map<ContactName, String> contacts;
+    private String uuid;
+    private String fullName;
+    private Map<SectionName, Section> sections;
+    private Map<ContactName, String> contacts;
+
+    public Resume() {
+    }
 
     private Resume(Builder builder) {
         validate(builder);
@@ -203,22 +211,13 @@ public class Resume implements Comparable<Resume>, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
-        if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
-        if (fullName != null ? !fullName.equals(resume.fullName) : resume.fullName != null) return false;
-        if (sections != null ? !sections.equals(resume.sections) : resume.sections != null) return false;
-        return contacts != null ? contacts.equals(resume.contacts) : resume.contacts == null;
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(sections, resume.sections) && Objects.equals(contacts, resume.contacts);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid != null ? uuid.hashCode() : 0;
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (sections != null ? sections.hashCode() : 0);
-        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
-        return result;
+        return Objects.hash(uuid, fullName, sections, contacts);
     }
 
     @Override

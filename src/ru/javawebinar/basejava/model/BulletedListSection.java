@@ -1,17 +1,23 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class BulletedListSection implements Section, Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class BulletedListSection extends Section implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<String> contentList;
+    private List<String> contentList;
 
     public BulletedListSection(List<String> contentList) {
         Objects.requireNonNull(contentList, "items must not be null");
         this.contentList = contentList;
+    }
+
+    public BulletedListSection() {
     }
 
     public BulletedListSection(String... content) {

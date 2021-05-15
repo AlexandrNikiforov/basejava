@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.serializer;
 
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -9,9 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-public interface ObjectStream {
+public class ObjectStreamSerializer implements StreamSerializer {
 
-    default Resume doRead(InputStream is) throws IOException {
+    @Override
+    public Resume doRead(InputStream is) throws IOException {
         Resume resume;
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
 
@@ -22,7 +23,8 @@ public interface ObjectStream {
         return resume;
     }
 
-    default void doWrite(Resume resume, OutputStream os) throws IOException {
+    @Override
+    public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(resume);
         }

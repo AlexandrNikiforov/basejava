@@ -1,13 +1,19 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 
-public class SingleLineSection implements Section, Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class SingleLineSection extends Section implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final String content;
+    private String content;
 
     public SingleLineSection(String content) {
         this.content = content;
+    }
+
+    public SingleLineSection() {
     }
 
     public String getContent() {

@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.serializer.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,20 +18,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PathStorage extends AbstractStorage<Path> implements SerializationTechnology, ObjectStream {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    private final StreamSerializer streamSerializer;
 
-    public PathStorage(String dir) {
+    public PathStorage(String dir, StreamSerializer streamSerializer) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "Directory must not be null");
+        Objects.requireNonNull(streamSerializer, "Stream serializer must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory of is not writable");
         }
+        this.streamSerializer = streamSerializer;
     }
-
-//    protected abstract Resume doRead(InputStream is) throws IOException;
-
-//    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
 
     @Override
     protected Path getSearchKey(String uuid) {
@@ -103,14 +103,12 @@ public class PathStorage extends AbstractStorage<Path> implements SerializationT
         return (int) getFilesList().count();
     }
 
-    @Override
     public Resume doRead(InputStream is) throws IOException {
-        return ObjectStream.super.doRead(is);
+        return streamSerializer.doRead(is);
     }
 
-    @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
-        ObjectStream.super.doWrite(resume, os);
+        streamSerializer.doWrite(resume, os);
     }
 
     private String getFileName(Path path) {

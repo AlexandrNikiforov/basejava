@@ -1,14 +1,20 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.List;
 
-public class OrganizationSection implements Section, Serializable {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class OrganizationSection extends Section implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final List<Organization> experience;
+    private List<Organization> experience;
 
     public OrganizationSection(List<Organization> experience) {
         this.experience = experience;
+    }
+
+    public OrganizationSection() {
     }
 
     @Override

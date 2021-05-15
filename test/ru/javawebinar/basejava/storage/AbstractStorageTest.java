@@ -43,9 +43,12 @@ abstract class AbstractStorageTest {
     }
 
     @Test
-    void clearShouldFillStorageWithNullAndMakeSizeZero() {
-        storage.clear();
-        assertSizeEqualsZero();
+    void updateShouldUpdateResumeIfResumeExistsInStorage() {
+        Resume newResume = ResumeTestData.createResume(UUID_01, "New name");
+
+        storage.update(newResume);
+
+        assertEquals(newResume, storage.get(UUID_01));
     }
 
     protected void assertSizeEqualsZero() {
@@ -56,19 +59,16 @@ abstract class AbstractStorageTest {
     }
 
     @Test
-    void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = ResumeTestData.createResume(UUID_01, "New name");
-
-        storage.update(newResume);
-
-        assertEquals(newResume, storage.get(UUID_01));
-    }
-
-    @Test
     void updateShouldThrowIfResumeDoesNotExistInStorage() {
         Executable executable = () -> storage.update(NON_EXISTENT_RESUME);
 
         assertThrows(NotExistStorageException.class, executable);
+    }
+
+    @Test
+    void clearShouldFillStorageWithNullAndMakeSizeZero() {
+        storage.clear();
+        assertSizeEqualsZero();
     }
 
     @Test
