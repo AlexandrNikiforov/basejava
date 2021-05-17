@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.serializer;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.model.BulletedListSection;
 import ru.javawebinar.basejava.model.Link;
@@ -18,7 +18,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
 public class XmlStreamSerializer implements StreamSerializer {
-    private XmlParser xmlParser;
+    private final XmlParser xmlParser;
 
     public XmlStreamSerializer() {
         xmlParser = new XmlParser(

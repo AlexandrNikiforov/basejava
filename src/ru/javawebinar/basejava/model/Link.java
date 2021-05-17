@@ -17,7 +17,7 @@ public class Link implements Serializable {
     public Link(String name, String companyWebSite) {
         Objects.requireNonNull(name, "Name should not be null");
         this.name = name;
-        this.companyWebSite = companyWebSite;
+        this.companyWebSite = companyWebSite == null? "": companyWebSite;
     }
 
     @Override
@@ -43,5 +43,13 @@ public class Link implements Serializable {
         String lineSeparatorPlusCompanyWebSite = companyWebSite == null ? "" : System.lineSeparator() + companyWebSite;
         return name +
                 lineSeparatorPlusCompanyWebSite;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCompanyWebSite() {
+        return companyWebSite;
     }
 }

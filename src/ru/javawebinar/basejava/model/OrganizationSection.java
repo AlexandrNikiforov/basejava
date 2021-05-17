@@ -8,13 +8,17 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends Section implements Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Organization> experience;
+    private List<Organization> organizations;
 
     public OrganizationSection(List<Organization> experience) {
-        this.experience = experience;
+        this.organizations = experience;
     }
 
     public OrganizationSection() {
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizations;
     }
 
     @Override
@@ -24,19 +28,19 @@ public class OrganizationSection extends Section implements Serializable {
 
         OrganizationSection that = (OrganizationSection) o;
 
-        return experience != null ? experience.equals(that.experience) : that.experience == null;
+        return organizations != null ? organizations.equals(that.organizations) : that.organizations == null;
     }
 
     @Override
     public int hashCode() {
-        return experience != null ? experience.hashCode() : 0;
+        return organizations != null ? organizations.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         String lineSeparator = System.lineSeparator();
         StringBuilder content = new StringBuilder();
-        for (Organization anExperience : experience) {
+        for (Organization anExperience : organizations) {
             content.append(anExperience)
                     .append(lineSeparator)
                     .append(lineSeparator);

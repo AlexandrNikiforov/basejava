@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.serializer;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -13,14 +13,11 @@ public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
     public Resume doRead(InputStream is) throws IOException {
-        Resume resume;
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
-
-            resume = (Resume) ois.readObject();
+            return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new StorageException(null, "Cannot read file", e);
         }
-        return resume;
     }
 
     @Override

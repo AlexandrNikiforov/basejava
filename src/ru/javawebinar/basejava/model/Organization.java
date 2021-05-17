@@ -29,6 +29,14 @@ public class Organization implements Serializable {
         this.positions = builder.experienceItems;
     }
 
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,7 +115,23 @@ public class Organization implements Serializable {
             this.startDate = builder.startDate;
             this.endDate = builder.endDate;
             this.title = builder.title;
-            this.description = builder.description;
+            this.description = builder.description  == null? "" : builder.description;;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override
@@ -180,6 +204,18 @@ public class Organization implements Serializable {
             Objects.requireNonNull(endYear, "End year must not be null");
             Objects.requireNonNull(endMonth, "End month must not be null");
             this.endDate = of(endYear, endMonth);
+            return this;
+        }
+
+        public PositionBuilder withStartDate(LocalDate ld) {
+            Objects.requireNonNull(ld, "StartDate must not be null");
+            this.startDate = ld;
+            return this;
+        }
+
+        public PositionBuilder withEndDate(LocalDate ld) {
+            Objects.requireNonNull(ld, "End date must not be null");
+            this.endDate = ld;
             return this;
         }
 

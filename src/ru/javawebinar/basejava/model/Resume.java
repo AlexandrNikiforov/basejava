@@ -37,6 +37,14 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts.get(contactType);
     }
 
+    public Map<ContactName, String> getContacts () {
+        return contacts;
+    }
+
+    public Map<SectionName, Section> getSections () {
+        return sections;
+    }
+
     public Section getSection(SectionName type) {
         return sections.get(type);
     }
@@ -45,8 +53,8 @@ public class Resume implements Comparable<Resume>, Serializable {
         contacts.put(type, value);
     }
 
-    public void addSection (ContactName type, String value) {
-        contacts.put(type, value);
+    public void addSection (SectionName type, Section section) {
+        sections.put(type, section);
     }
 
     public static Builder builder() {
@@ -148,12 +156,6 @@ public class Resume implements Comparable<Resume>, Serializable {
             this.sections.put(SectionName.ACHIEVEMENTS, new BulletedListSection(achievementsValue));
             return this;
         }
-//
-//        public Builder withAchievements(String... achievementsValue) {
-//            Objects.requireNonNull(achievementsValue, "Achievements value must not be null");
-//            this.sections.put(SectionName.ACHIEVEMENTS, new BulletedListSection(achievementsValue));
-//            return this;
-//        }
 
         public Builder withQualifications(List<String> achievementsValue) {
             Objects.requireNonNull(achievementsValue, "Qualifications value must not be null");

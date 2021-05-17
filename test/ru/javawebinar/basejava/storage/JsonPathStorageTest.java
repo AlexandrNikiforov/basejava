@@ -1,8 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.serializer.JsonStreamSerializer;
-
-import static org.junit.jupiter.api.Assertions.*;
+import ru.javawebinar.basejava.storage.serializer.JsonStreamSerializer;
 
 class JsonPathStorageTest extends AbstractStorageTest {
 
