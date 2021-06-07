@@ -6,8 +6,8 @@ public class Deadlock {
     private static final Object roadB = new Object();
 
     public static void main(String[] args) {
-        CarA carA = new CarA();
-        CarB carB = new CarB();
+        Car carA = new Car(roadA, roadB);
+        Car carB = new Car(roadB, roadA);
         carA.start();
         carB.start();
         try {
@@ -18,27 +18,25 @@ public class Deadlock {
         }
     }
 
-    public static class CarA extends Thread {
+    public static class Car extends Thread {
+        private Object lock1;
+        private Object lock2;
 
-        @Override
-        public void run() {
-            synchronized (roadA) {
-                System.out.println("CarA is driving along the road A");
-                synchronized (roadB) {
-                    System.out.println("CarA crossed the roadB");
-                }
-            }
+        public Car(Object lock1, Object lock2) {
+            this.lock1 = lock1;
+            this.lock2 = lock2;
         }
-    }
-
-    public static class CarB extends Thread {
 
         @Override
         public void run() {
-            synchronized (roadB) {
-                System.out.println("CarB is driving along the road B");
-                synchronized (roadA) {
-                    System.out.println("CarB crossed the road A");
+            crossTheRoad(lock1, lock2);
+        }
+
+        private void crossTheRoad(Object lock1, Object lock2) {
+            synchronized (lock1) {
+                System.out.println("CarA is driving along the road A");
+                synchronized (lock2) {
+                    System.out.println("CarA crossed the roadB");
                 }
             }
         }
