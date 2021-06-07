@@ -1,14 +1,11 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ContactName;
 import ru.javawebinar.basejava.model.Organization;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.SectionName;
 
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
@@ -220,8 +217,6 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume resume01 = Resume.builder()
-                .withContactsImplementation(new EnumMap<>(ContactName.class))
-                .withSectionsImplementation(new EnumMap<>(SectionName.class))
 //                .withUuid("uuid01")
                 .withFullName("Григорий Кислин")
                 .withPhoneNumber(PHONE_NUMBER)
@@ -244,8 +239,6 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
         return Resume.builder()
-                .withContactsImplementation(new EnumMap<>(ContactName.class))
-                .withSectionsImplementation(new EnumMap<>(SectionName.class))
                 .withUuid(uuid)
                 .withFullName(fullName)
                 .withPhoneNumber(PHONE_NUMBER)

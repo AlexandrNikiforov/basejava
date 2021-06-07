@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -65,8 +66,8 @@ public class Resume implements Comparable<Resume>, Serializable {
         private static final long serialVersionUID = 1L;
         private String uuid;
         private String fullName;
-        private Map<SectionName, Section> sections;
-        private Map<ContactName, String> contacts;
+        private Map<SectionName, Section> sections  = new EnumMap<>(SectionName.class);
+        private Map<ContactName, String> contacts = new EnumMap<>(ContactName.class);
 
         private Builder() {
         }
@@ -74,17 +75,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         public Resume build() {
             return new Resume(this);
         }
-
-        public Builder withSectionsImplementation(Map<SectionName, Section> sections) {
-            this.sections = sections;
-            return this;
-        }
-
-        public Builder withContactsImplementation(Map<ContactName, String> contacts) {
-            this.contacts = contacts;
-            return this;
-        }
-
 
         public Builder withUuid(String uuid) {
             this.uuid = uuid;

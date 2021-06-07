@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.model.BulletedListSection;
 import ru.javawebinar.basejava.model.ContactName;
+import ru.javawebinar.basejava.model.Link;
 import ru.javawebinar.basejava.model.Organization;
 import ru.javawebinar.basejava.model.OrganizationSection;
 import ru.javawebinar.basejava.model.Resume;
@@ -17,7 +18,6 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +51,9 @@ public class DataStreamSerializer implements StreamSerializer {
                     case EXPERIENCE:
                     case EDUCATION:
                         writeCollection(dos, ((OrganizationSection) section).getOrganizations(), org -> {
-                            dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getCompanyWebSite());
+                            Link homePage = org.getHomePage();
+                            dos.writeUTF(homePage.getName());
+                            dos.writeUTF(homePage.getCompanyWebSite());
                             writeCollection(dos, org.getPositions(), pos -> {
                                 writeLocalDate(dos, pos.getStartDate());
                                 writeLocalDate(dos, pos.getEndDate());
@@ -89,8 +90,6 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = Resume.builder()
-                    .withContactsImplementation(new EnumMap<>(ContactName.class))
-                    .withSectionsImplementation(new EnumMap<>(SectionName.class))
                     .withUuid(uuid)
                     .withFullName(fullName)
                     .build();
