@@ -2,28 +2,28 @@ package ru.javawebinar.basejava.multithreading;
 
 public class Deadlock {
 
-    private static final Object roadA = new Object();
-    private static final Object roadB = new Object();
+    private static final String lock1 = "lockA";
+    private static final String lock2 = "lockB";
 
     public static void main(String[] args) {
-        Thread carA = new Thread(() -> crossTheRoad(roadA, roadB));
-        Thread carB = new Thread(() -> crossTheRoad(roadB, roadA));
-        carA.start();
-        carB.start();
-        try {
-            carA.join();
-            carB.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        deadlock(lock1, lock2);
+        deadlock(lock2, lock1);
     }
 
-    private static void crossTheRoad(Object lock1, Object lock2) {
-        synchronized (lock1) {
-            System.out.println("Car is driving along the road");
-            synchronized (lock2) {
-                System.out.println("Car crossed the roadB");
+    private static void deadlock(Object lock1, Object lock2) {
+        new Thread(() -> {
+            synchronized (lock1) {
+                System.out.println(Thread.currentThread().getName() + "has blocked " + lock1);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + " is waiting for " + lock2);
+                synchronized (lock2) {
+                    System.out.println(Thread.currentThread().getName() + " has blocked " + lock2);
+                }
             }
-        }
+        }).start();
     }
 }
