@@ -13,7 +13,7 @@ public class Deadlock {
     private static void deadlock(Object lock1, Object lock2) {
         new Thread(() -> {
             synchronized (lock1) {
-                System.out.println(Thread.currentThread().getName() + "has blocked " + lock1);
+                System.out.println(Thread.currentThread().getName() + " has blocked " + lock1);
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {

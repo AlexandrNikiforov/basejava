@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.multithreading;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorCompletionService;
@@ -17,6 +18,13 @@ public class MainConcurrency {
     private static final AtomicInteger atomicCounter = new AtomicInteger();
     //    public static final Object LOCK = new Object();
     private static final Lock lock = new ReentrantLock();
+
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        }
+    };
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName());
