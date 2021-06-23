@@ -22,8 +22,7 @@ public class StreamsHW12 {
         return Arrays.stream(values)
                 .distinct()                   // unique digits
                 .sorted()                     // sorted digits (descending)
-                .reduce((l, r) -> l * 10 + r) // shifts a digit and adds another one
-                .orElseThrow(RuntimeException::new);
+                .reduce(0, (l, r) -> l * 10 + r); // shifts a digit and adds another one
     }
 
     private static int minValueWithoutStreams(int[] values) {
