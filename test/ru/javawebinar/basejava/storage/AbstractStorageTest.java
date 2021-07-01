@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
@@ -12,12 +13,14 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class AbstractStorageTest {
 
     protected final Storage storage;
-    protected static final File STORAGE_DIR = new File("/home/nikiforov-java/workspace/javaops/basejava/storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected static final String UUID_01 = "uuid01";
     protected static final Resume RESUME_1 = ResumeTestData.createResume(UUID_01, "C Name 1");
 
