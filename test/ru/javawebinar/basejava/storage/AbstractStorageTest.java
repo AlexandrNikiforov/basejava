@@ -10,8 +10,10 @@ import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +34,9 @@ abstract class AbstractStorageTest {
 
     protected static final String UUID_04 = "uuid04";
     protected static final Resume NON_EXISTENT_RESUME = ResumeTestData.createResume(UUID_04, "Name 4");
+
+    protected static final String UUID_05 = "uuid05";
+    protected static final Resume NON_EXISTENT_RESUME2 = ResumeTestData.createResume(UUID_05, "Name 5");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -124,15 +129,16 @@ abstract class AbstractStorageTest {
     }
 
     @Test
-    void deleteShouldThrowWhenResumeExistsInStorage() {
-        Executable executable = () -> storage.delete(NON_EXISTENT_RESUME.getUuid());
+    void deleteShouldThrowWhenResumeDoesNotExistInStorage() {
+        Executable executable = () -> storage.delete(NON_EXISTENT_RESUME2.getUuid());
 
         assertThrows(NotExistStorageException.class, executable);
     }
 
     @Test
     void getAllShouldReturnArrayOfExistedResumes() {
-        List<Resume> expected = Arrays.asList(RESUME_3, RESUME_2, RESUME_1);
+//        List<Resume> expected = Arrays.asList(RESUME_3, RESUME_2, RESUME_1);
+        List<Resume> expected = Stream.of(RESUME_3, RESUME_2, RESUME_1).collect(Collectors.toCollection(ArrayList::new));
         List<Resume> actual = storage.getAllSorted();
 
         assertEquals(expected, actual);
