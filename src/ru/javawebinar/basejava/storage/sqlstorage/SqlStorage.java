@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage.sqlstorage;
 
-import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -13,19 +12,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 //Add logging
 //move duplicated code to sqlhelper class
 
 public class SqlStorage implements Storage {
-    protected static final Comparator<Resume> RESUME_NAME_COMPARATOR =
-            Comparator.comparing(Resume::getFullName);
-    public final ConnectionFactory connectionFactory;
+    private final ConnectionFactory connectionFactory;
+    private final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -56,16 +54,25 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(
-                     "INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ")) {
+        sqlHelper.executeSqlStatement((ps) -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
-            ps.execute();
-        } catch (SQLException e) {
-            throw new ExistStorageException(r.getUuid(), "Resume exists in the storage", e);
-        }
+            ps.executeUpdate();
+        }, "INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ", r);
     }
+
+//    @Override
+//    public void save(Resume r) {
+//        try (Connection conn = connectionFactory.getConnection();
+//             PreparedStatement ps = conn.prepareStatement(
+//                     "INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ")) {
+//            ps.setString(1, r.getUuid());
+//            ps.setString(2, r.getFullName());
+//            ps.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new ExistStorageException(r.getUuid(), "Resume exists in the storage", e);
+//        }
+//    }
 
     @Override
     public Resume get(String uuid) {
