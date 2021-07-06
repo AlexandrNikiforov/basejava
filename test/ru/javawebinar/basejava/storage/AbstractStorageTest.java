@@ -12,6 +12,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,19 +24,19 @@ abstract class AbstractStorageTest {
 
     protected final Storage storage;
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
-    protected static final String UUID_01 = "uuid01";
+    protected static final String UUID_01 = UUID.randomUUID().toString();
     protected static final Resume RESUME_1 = ResumeTestData.createResume(UUID_01, "C Name 1");
 
-    protected static final String UUID_02 = "uuid02";
+    protected static final String UUID_02 = UUID.randomUUID().toString();;
     protected static final Resume RESUME_2 = ResumeTestData.createResume(UUID_02, "B Name 2");
 
-    protected static final String UUID_03 = "uuid03";
+    protected static final String UUID_03 = UUID.randomUUID().toString();;
     protected static final Resume RESUME_3 = ResumeTestData.createResume(UUID_03, "A Name 3");
 
-    protected static final String UUID_04 = "uuid04";
+    protected static final String UUID_04 = UUID.randomUUID().toString();;
     protected static final Resume NON_EXISTENT_RESUME = ResumeTestData.createResume(UUID_04, "Name 4");
 
-    protected static final String UUID_05 = "uuid05";
+    protected static final String UUID_05 = UUID.randomUUID().toString();;
     protected static final Resume NON_EXISTENT_RESUME2 = ResumeTestData.createResume(UUID_05, "Name 5");
 
     protected AbstractStorageTest(Storage storage) {
