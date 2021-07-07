@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
+import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
-import ru.javawebinar.basejava.exceptions.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
@@ -98,7 +98,7 @@ abstract class AbstractStorageTest {
     void saveShouldThrowWhenResumeExistsInStorage() {
         Executable executable = () -> storage.save(RESUME_1);
 
-        assertThrows(StorageException.class, executable);
+        assertThrows(ExistStorageException.class, executable);
     }
 
     @Test
