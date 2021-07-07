@@ -8,4 +8,8 @@ public class ExistStorageException extends StorageException {
     public ExistStorageException(String uuid, String message, Exception e) {
         super(uuid, message, e);
     }
+
+    public ExistStorageException(String message, Exception e) {
+        super(null, message, e);
+    }
 }

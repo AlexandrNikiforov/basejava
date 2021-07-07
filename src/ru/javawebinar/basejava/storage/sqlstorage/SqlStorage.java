@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage.sqlstorage;
 
-import ru.javawebinar.basejava.exceptions.ExistStorageException;
 import ru.javawebinar.basejava.exceptions.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
@@ -29,10 +28,10 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        String uuid = r.getUuid();
-        LOG.info("Update " + uuid);
         sqlHelper.executeAndGet("UPDATE resume SET full_name = ? WHERE uuid = ?",
                 (ps -> {
+                    String uuid = r.getUuid();
+                    LOG.info("Update " + uuid);
                     ps.setString(1, r.getFullName());
                     ps.setString(2, uuid);
                     if (ps.executeUpdate() == 0) {
@@ -44,21 +43,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        String uuid = r.getUuid();
-        LOG.info("Save " + uuid);
         sqlHelper.executeAndGet("INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ",
                 ps -> {
-                    try {
-                        ps.setString(1, uuid);
-                        ps.setString(2, r.getFullName());
-                        ps.execute();
-
-                    } catch (SQLException e) {
-                        String sqlState = e.getSQLState();
-                        if (sqlState.equalsIgnoreCase("23505")) {
-                            throw new ExistStorageException(uuid, "Resume exists in the storage", e);
-                        }
-                    }
+                    String uuid = r.getUuid();
+                    LOG.info("Save " + uuid);
+                    ps.setString(1, uuid);
+                    ps.setString(2, r.getFullName());
+                    ps.execute();
                     return null;
                 });
     }
