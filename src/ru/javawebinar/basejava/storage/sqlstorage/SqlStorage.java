@@ -24,79 +24,84 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("Clear");
-        sqlHelper.executeAndGet(PreparedStatement::execute, "DELETE FROM resume");
+        sqlHelper.executeAndGet("DELETE FROM resume", PreparedStatement::execute);
     }
 
     @Override
     public void update(Resume r) {
         LOG.info("Update " + r.getUuid());
-        sqlHelper.executeAndGet((ps -> {
+        sqlHelper.executeAndGet("UPDATE resume SET full_name = ? WHERE uuid = ?",
+                (ps -> {
                     ps.setString(1, r.getFullName());
                     ps.setString(2, r.getUuid());
                     int affectedRows = ps.executeUpdate();
                     if (affectedRows == 0) throw new NotExistStorageException("Resume does not exist in the Storage");
                     return affectedRows;
-                }),
-                "UPDATE resume SET full_name = ? WHERE uuid = ?");
+                }));
     }
 
     @Override
     public void save(Resume r) {
         LOG.info("Save " + r.getUuid());
-        sqlHelper.executeAndGet(ps -> {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, r.getFullName());
-            ps.executeUpdate();
-            return Optional.empty();
-        }, "INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ");
+        sqlHelper.executeAndGet("INSERT INTO resume (uuid, full_name) VALUES (?, ?)  ",
+                ps -> {
+                    ps.setString(1, r.getUuid());
+                    ps.setString(2, r.getFullName());
+                    ps.executeUpdate();
+                    return Optional.empty();
+                });
     }
 
     @Override
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
-        return sqlHelper.executeAndGet((PreparedStatement ps) -> {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
-            checkIfResultSetIsEmpty(rs);
-            return createResume(uuid, rs);
-        }, "SELECT * FROM resume r WHERE r.uuid =?");
+        return sqlHelper.executeAndGet("SELECT * FROM resume r WHERE r.uuid =?",
+                (PreparedStatement ps) -> {
+                    ps.setString(1, uuid);
+                    ResultSet rs = ps.executeQuery();
+                    checkIfResultSetIsEmpty(rs);
+                    return createResume(uuid, rs);
+                });
     }
 
     @Override
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
-        sqlHelper.executeAndGet(ps -> {
-            ps.setString(1, uuid);
-            int affectedRows = ps.executeUpdate();
-            if (affectedRows == 0) throw new NotExistStorageException("Resume does not exist in the Storage");
-            return affectedRows;
-        }, "DELETE FROM resume r WHERE r.uuid =?");
+        sqlHelper.executeAndGet("DELETE FROM resume r WHERE r.uuid =?",
+                ps -> {
+                    ps.setString(1, uuid);
+                    int affectedRows = ps.executeUpdate();
+                    if (affectedRows == 0) throw new NotExistStorageException("Resume does not exist in the Storage");
+                    return affectedRows;
+                });
     }
 
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
-        return sqlHelper.executeAndGet((PreparedStatement ps) -> {
-            List<Resume> resumesSorted = new ArrayList<>();
-            ResultSet rs = ps.executeQuery();
-            checkIfResultSetIsEmpty(rs);
-            do {
-                resumesSorted.add(
-                        createResume(rs.getString("uuid"), rs));
-            }
-            while (rs.next());
-            return resumesSorted;
-        }, "SELECT * FROM resume r ORDER BY r.full_name");
+        return sqlHelper.executeAndGet("SELECT * FROM resume r ORDER BY r.full_name",
+                (PreparedStatement ps) -> {
+                    List<Resume> resumesSorted = new ArrayList<>();
+                    ResultSet rs = ps.executeQuery();
+                    checkIfResultSetIsEmpty(rs);
+                    do {
+                        resumesSorted.add(
+                                createResume(rs.getString("uuid"), rs));
+                    }
+                    while (rs.next());
+                    return resumesSorted;
+                });
     }
 
     @Override
     public int size() {
         LOG.info("Size");
-        return sqlHelper.executeAndGet((PreparedStatement ps) -> {
-            ResultSet rs = ps.executeQuery();
-            checkIfResultSetIsEmpty(rs);
-            return rs.getInt("size");
-        }, "SELECT COUNT(*) AS size FROM resume");
+        return sqlHelper.executeAndGet("SELECT COUNT(*) AS size FROM resume",
+                (PreparedStatement ps) -> {
+                    ResultSet rs = ps.executeQuery();
+                    checkIfResultSetIsEmpty(rs);
+                    return rs.getInt("size");
+                });
     }
 
     private void checkIfResultSetIsEmpty(ResultSet rs) throws SQLException {

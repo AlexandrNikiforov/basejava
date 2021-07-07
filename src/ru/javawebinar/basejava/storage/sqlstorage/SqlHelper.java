@@ -16,7 +16,7 @@ public class SqlHelper {
 
     }
 
-    public <T> T executeAndGet(StatementExecutionStrategy<T> sqlGetter, String sqlQuery) {
+    public <T> T executeAndGet(String sqlQuery, StatementExecutionStrategy<T> sqlGetter) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(
                      sqlQuery)) {
