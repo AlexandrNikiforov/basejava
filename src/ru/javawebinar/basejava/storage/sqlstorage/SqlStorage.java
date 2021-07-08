@@ -35,7 +35,7 @@ public class SqlStorage implements Storage {
                     ps.setString(1, r.getFullName());
                     ps.setString(2, uuid);
                     if (ps.executeUpdate() == 0) {
-                        throw new NotExistStorageException("Resume does not exist in the Storage");
+                        throw new NotExistStorageException(uuid, "Resume does not exist in the Storage");
                     }
                     return null;
                 }));
@@ -62,9 +62,9 @@ public class SqlStorage implements Storage {
                     ps.setString(1, uuid);
                     ResultSet rs = ps.executeQuery();
                     if (!rs.next()) {
-                        throw new NotExistStorageException("Storage is empty");
+                        throw new NotExistStorageException(uuid);
                     }
-                    return createResume(uuid, rs);
+                    return createResume(rs);
                 });
     }
 
@@ -85,14 +85,13 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
         return sqlHelper.executeAndGet("SELECT * FROM resume r ORDER BY r.full_name, r.uuid",
-                (PreparedStatement ps) -> {
+                ps -> {
                     List<Resume> resumesSorted = new ArrayList<>();
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
                         resumesSorted.add(
-                                createResume(rs.getString("uuid"), rs));
+                                createResume(rs));
                     }
-
                     return resumesSorted;
                 });
     }
@@ -101,16 +100,16 @@ public class SqlStorage implements Storage {
     public int size() {
         LOG.info("Size");
         return sqlHelper.executeAndGet("SELECT COUNT(*) AS size FROM resume",
-                (PreparedStatement ps) -> {
+                ps -> {
                     ResultSet rs = ps.executeQuery();
                     rs.next();
                     return rs.getInt("size");
                 });
     }
 
-    private Resume createResume(String uuid, ResultSet rs) throws SQLException {
+    private Resume createResume(ResultSet rs) throws SQLException {
         return Resume.builder()
-                .withUuid(uuid)
+                .withUuid(rs.getString("uuid"))
                 .withFullName(rs.getString("full_name"))
                 .build();
     }

@@ -14,7 +14,6 @@ public class SqlHelper {
 
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
     }
 
     public <T> T executeAndGet(String sqlQuery, StatementExecutionStrategy<T> sqlGetter) {
@@ -24,7 +23,7 @@ public class SqlHelper {
             return sqlGetter.execute(ps);
         } catch (SQLException e) {
             String sqlState = e.getSQLState();
-            if (sqlState.equalsIgnoreCase("23505")) {
+            if (sqlState.equals("23505")) {
                 throw new ExistStorageException("Resume exists in the storage", e);
             }
             throw new StorageException(e);
