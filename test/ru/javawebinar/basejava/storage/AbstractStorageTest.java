@@ -27,16 +27,24 @@ abstract class AbstractStorageTest {
     protected static final String UUID_01 = UUID.randomUUID().toString();
     protected static final Resume RESUME_1 = ResumeTestData.createResume(UUID_01, "C Name 1");
 
-    protected static final String UUID_02 = UUID.randomUUID().toString();;
-    protected static final Resume RESUME_2 = ResumeTestData.createResume(UUID_02, "B Name 2");
+    protected static final String UUID_02 = UUID.randomUUID().toString();
 
-    protected static final String UUID_03 = UUID.randomUUID().toString();;
+    //    protected static final Resume RESUME_2 = ResumeTestData.createResume(UUID_02, "B Name 2");
+    protected static final Resume RESUME_2 = Resume.builder()
+            .withUuid(UUID_02)
+            .withFullName("B Name 2")
+            .build();
+
+    protected static final String UUID_03 = UUID.randomUUID().toString();
+
     protected static final Resume RESUME_3 = ResumeTestData.createResume(UUID_03, "A Name 3");
 
-    protected static final String UUID_04 = UUID.randomUUID().toString();;
+    protected static final String UUID_04 = UUID.randomUUID().toString();
+
     protected static final Resume NON_EXISTENT_RESUME = ResumeTestData.createResume(UUID_04, "Name 4");
 
-    protected static final String UUID_05 = UUID.randomUUID().toString();;
+    protected static final String UUID_05 = UUID.randomUUID().toString();
+
     protected static final Resume NON_EXISTENT_RESUME2 = ResumeTestData.createResume(UUID_05, "Name 5");
 
     protected AbstractStorageTest(Storage storage) {
@@ -138,7 +146,6 @@ abstract class AbstractStorageTest {
 
     @Test
     void getAllShouldReturnArrayOfExistedResumes() {
-//        List<Resume> expected = Arrays.asList(RESUME_3, RESUME_2, RESUME_1);
         List<Resume> expected = Stream.of(RESUME_3, RESUME_2, RESUME_1).collect(Collectors.toCollection(ArrayList::new));
         List<Resume> actual = storage.getAllSorted();
 

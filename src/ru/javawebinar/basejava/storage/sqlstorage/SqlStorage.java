@@ -87,8 +87,10 @@ public class SqlStorage implements Storage {
                     Resume r = createResume(rs);
                     do {
                         String value = rs.getString("value");
-                        ContactName type = ContactName.valueOf(rs.getString("type"));
-                        r.addContact(type, value);
+                        if (value != null) {
+                            ContactName type = ContactName.valueOf(rs.getString("type"));
+                            r.addContact(type, value);
+                        }
                     } while (rs.next());
                     return r;
                 });
@@ -119,14 +121,18 @@ public class SqlStorage implements Storage {
                     Map<String, Resume> resumeByUuid = new LinkedHashMap<>();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid");
-                        String value = rs.getString("value");
-                        ContactName type = ContactName.valueOf(rs.getString("type"));
+
+
                         Resume r = resumeByUuid.get(uuid);
                         if (r == null) {
                             r = createResume(rs);
                             resumeByUuid.put(uuid, r);
                         }
-                        r.addContact(type, value);
+                        String value = rs.getString("value");
+                        if (value != null) {
+                            ContactName type = ContactName.valueOf(rs.getString("type"));
+                            r.addContact(type, value);
+                        }
                     }
                     return new ArrayList<>(resumeByUuid.values());
                 });
