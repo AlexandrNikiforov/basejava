@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.ContactName;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,10 +42,14 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(uuid, "Resume does not exist in the Storage");
                 }
             }
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET  type = ?, value = ?\n" +
+
+            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact " +
                     "WHERE resume_uuid = ?")) {
-                setStringsFromContactsAndExecute(r, uuid, ps);
+                ps.setString(1, uuid);
+                ps.execute();
             }
+
+            setStringsFromContactsAndExecute(r, uuid, conn);
             return null;
         });
     }
@@ -60,11 +65,7 @@ public class SqlStorage implements Storage {
                         ps.setString(2, r.getFullName());
                         ps.execute();
                     }
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "INSERT INTO contact (resume_uuid, type, value) " +
-                                    "VALUES (?, ?, ?)  ")) {
-                        setStringsFromContactsAndExecute(r, uuid, ps);
-                    }
+                    setStringsFromContactsAndExecute(r, uuid, conn);
                     return null;
                 }
         );
@@ -156,13 +157,16 @@ public class SqlStorage implements Storage {
                 .build();
     }
 
-    private void setStringsFromContactsAndExecute(Resume r, String uuid, PreparedStatement ps) throws SQLException {
-        for (Map.Entry<ContactName, String> contact : r.getContacts().entrySet()) {
-            ps.setString(1, uuid);
-            ps.setString(2, contact.getKey().name());
-            ps.setString(3, contact.getValue());
-            ps.addBatch();
+    private void setStringsFromContactsAndExecute(Resume r, String uuid, Connection conn) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) " +
+                "VALUES (?, ?, ?)  ")) {
+            for (Map.Entry<ContactName, String> contact : r.getContacts().entrySet()) {
+                ps.setString(1, uuid);
+                ps.setString(2, contact.getKey().name());
+                ps.setString(3, contact.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
         }
-        ps.executeBatch();
     }
 }

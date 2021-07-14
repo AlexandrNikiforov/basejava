@@ -61,11 +61,17 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateShouldUpdateResumeIfResumeExistsInStorage() {
-        Resume newResume = ResumeTestData.createResume(UUID_01, "New name");
+//        Resume newResume = ResumeTestData.createResume(UUID_01, "New name");
+        Resume newResume = Resume.builder()
+                .withUuid(UUID_01)
+                .withFullName("New name")
+                .withPhoneNumber("new Phone number")
+                .build();
 
         storage.update(newResume);
+        Resume actual = storage.get(UUID_01);
 
-        assertEquals(newResume, storage.get(UUID_01));
+        assertEquals(newResume, actual);
     }
 
     protected void assertSizeEqualsZero() {
