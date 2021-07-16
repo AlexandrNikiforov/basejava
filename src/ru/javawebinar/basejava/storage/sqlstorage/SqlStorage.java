@@ -49,7 +49,7 @@ public class SqlStorage implements Storage {
                 ps.execute();
             }
 
-            setStringsFromContactsAndExecute(r, uuid, conn);
+            insertContacts(r, conn);
             return null;
         });
     }
@@ -65,7 +65,7 @@ public class SqlStorage implements Storage {
                         ps.setString(2, r.getFullName());
                         ps.execute();
                     }
-                    setStringsFromContactsAndExecute(r, uuid, conn);
+                    insertContacts(r, conn);
                     return null;
                 }
         );
@@ -87,11 +87,7 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = createResume(rs);
                     do {
-                        String value = rs.getString("value");
-                        if (value != null) {
-                            ContactName type = ContactName.valueOf(rs.getString("type"));
-                            r.addContact(type, value);
-                        }
+                        addContact(rs, r);
                     } while (rs.next());
                     return r;
                 });
@@ -129,11 +125,7 @@ public class SqlStorage implements Storage {
                             r = createResume(rs);
                             resumeByUuid.put(uuid, r);
                         }
-                        String value = rs.getString("value");
-                        if (value != null) {
-                            ContactName type = ContactName.valueOf(rs.getString("type"));
-                            r.addContact(type, value);
-                        }
+                        addContact(rs, r);
                     }
                     return new ArrayList<>(resumeByUuid.values());
                 });
@@ -157,16 +149,25 @@ public class SqlStorage implements Storage {
                 .build();
     }
 
-    private void setStringsFromContactsAndExecute(Resume r, String uuid, Connection conn) throws SQLException {
+    private void insertContacts(Resume r, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) " +
                 "VALUES (?, ?, ?)  ")) {
             for (Map.Entry<ContactName, String> contact : r.getContacts().entrySet()) {
-                ps.setString(1, uuid);
+                ps.setString(1, r.getUuid());
                 ps.setString(2, contact.getKey().name());
                 ps.setString(3, contact.getValue());
                 ps.addBatch();
             }
             ps.executeBatch();
+        }
+    }
+
+    private void addContact(ResultSet rs, Resume r) throws SQLException {
+        String value = rs.getString("value");
+
+        if (value != null) {
+            ContactName type = ContactName.valueOf(rs.getString("type"));
+            r.addContact(type, value);
         }
     }
 }
