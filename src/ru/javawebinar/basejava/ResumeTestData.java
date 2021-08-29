@@ -248,12 +248,12 @@ public class ResumeTestData {
                 .withGitHubProfile(GITHUB)
                 .withStackoverflow(STACKOVERFLOW)
                 .withHomePage(HOMEPAGE)
-//                .withObjective(OBJECTIVE_CONTENT)
-//                .withPersonal(PERSONAL_CONTENT)
-//                .withAchievements(ACHIEVEMENTS_CONTENT)
-//                .withQualifications(QUALIFICATIONS_CONTENT)
-//                .withExperience(EXPERIENCE_CONTENT)
-//                .withEducation(EDUCATION_CONTENT)
+                .withObjective(OBJECTIVE_CONTENT)
+                .withPersonal(PERSONAL_CONTENT)
+                .withAchievements(ACHIEVEMENTS_CONTENT)
+                .withQualifications(QUALIFICATIONS_CONTENT)
+                .withExperience(EXPERIENCE_CONTENT)
+                .withEducation(EDUCATION_CONTENT)
                 .build();
     }
 }
